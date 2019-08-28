@@ -70,6 +70,22 @@ data class Entity(@PrimaryKey @Expose var id: String) : BaseObservable(), Parcel
             notifyPropertyChanged(BR.subEntities)
         }
 
+    @Expose
+    @get:Bindable
+    var type: Int? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.type)
+        }
+
+    @Expose
+    @get:Bindable
+    var dateS: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.dateS)
+        }
+
     enum class Status {
         NEW, PROGRESS, FINISHED
     }
