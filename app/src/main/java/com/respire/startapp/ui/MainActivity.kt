@@ -32,18 +32,25 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         setContentView(R.layout.activity_main)
         initViews()
         viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+        retrieveEntities()
+    }
+
+    private fun retrieveEntities() {
+        swipeRefreshLayout.isRefreshing = true
         viewModel.getEntities().observe(this, Observer<Result<MutableList<Entity>>> {
             it.data?.let { data ->
                 adapter.data = data
                 adapter.notifyDataSetChanged()
             }
             it.error?.printStackTrace()
+            swipeRefreshLayout.isRefreshing = false
         })
     }
 
     private fun initViews() {
         entitiesRecyclerView.layoutManager = layoutManager
         entitiesRecyclerView.adapter = adapter
+        swipeRefreshLayout.setOnRefreshListener { retrieveEntities() }
     }
 
     private fun openAppInGooglePlay(it: String?) {

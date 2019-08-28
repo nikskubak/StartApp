@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StartApp</string>
+    <string name="main_toolbar_title">Apps from Google Play</string>
 </resources>
