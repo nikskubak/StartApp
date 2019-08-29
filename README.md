@@ -3,7 +3,7 @@
 This is the Android skeleton project that I use when I start a new project. 
 It built on Kotlin with ViewModel, DataBinding, Coroutines, Dagger 2, Room Persistence and Retrofit. I think this skeleton project can help you minimize your time for setup and build templating code. Start your app with this project!
 ## Architecture
-StartApp uses MVVM architecture pattern with repositories. Base of MVVM are ViewModel, DataBinding and LiveData from [Arch Components](https://developer.android.com/topic/libraries/architecture)
+StartApp uses MVVM architecture pattern with repositories. Base of MVVM is ViewModel, DataBinding and LiveData from [Arch Components](https://developer.android.com/topic/libraries/architecture)
 
 ## Repositories
 Several reason why:
@@ -189,3 +189,88 @@ class Result<T> {
     var error: Exception? = null
 }
 ```
+
+## ViewModel and its injecting
+
+I use base ObservableAndroidViewModel for work with context and Data Binding
+```kotlin
+open class ObservableAndroidViewModel(application: Application) : AndroidViewModel(application), Observable {
+
+    private val callbacks: PropertyChangeRegistry by lazy { PropertyChangeRegistry() }
+
+    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback) {
+        callbacks.add(callback)
+    }
+
+    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback) {
+        callbacks.remove(callback)
+    }
+
+    /**
+     * Notifies listeners that all properties of this instance have changed.
+     */
+    @Suppress("unused")
+    fun notifyChange() {
+        callbacks.notifyCallbacks(this, 0, null)
+    }
+
+    /**
+     * Notifies listeners that a specific property has changed. The getter for the property
+     * that changes should be marked with [Bindable] to generate a field in
+     * `BR` to be used as `fieldId`.
+     *
+     * @param fieldId The generated BR id for the Bindable field.
+     */
+    fun notifyPropertyChanged(fieldId: Int) {
+        callbacks.notifyCallbacks(this, fieldId, null)
+    }
+}
+```
+
+I needed to inject Repository into ViewModel and ViewModel into Activity. 
+So, i used Factory class for custom creating ViewModel. I injected Repository into Factory and inject Factory into Activity. 
+Activity uses injected Factory for create ViewModel or get it from Provider if it need. 
+This is helps ViewModel still alive after activity destroying. ViewModel helps restore data and view state after activity destroying.
+```kotlin
+class MainViewModel constructor(val app: Application, var entityRepository: EntityRepository) :
+    ObservableAndroidViewModel(app) {
+
+    fun getEntities(): LiveData<Result<MutableList<Entity>>> {
+        return entityRepository.getEntities(NetworkUtil.isConnected(app.baseContext))
+    }
+
+    class Factory @Inject constructor(
+        var application: Application,
+        var entityRepository: EntityRepository
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return MainViewModel(application, entityRepository) as T
+        }
+    }
+
+}
+```
+
+```kotlin
+class MainActivity : AppCompatActivity(), LifecycleOwner {
+
+    @Inject
+    lateinit var vmFactory: MainViewModel.Factory
+    lateinit var viewModel: MainViewModel
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
+        setContentView(R.layout.activity_main)
+        initViews()
+        viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+        retrieveEntities()
+    }
+}
+```
+
+For more information please pulls project with full code or contacts me
+- [Email](mailto:nikskubak@gmail.com)
+- [Telegram](https://t.me/nikskubak)
+- [Twitter](https://t.co/nikskubak)
+- [LinkedIn](https://linkedin.com/in/nikskubak)
