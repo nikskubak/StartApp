@@ -6,13 +6,20 @@ import com.respire.startapp.database.Entity
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 interface NetworkService {
+
+    @GET("/api/custom/hu/beacons")
+    fun sendBeacon(@Query(value = "uuid", encoded = true) uuid : String?,
+                   @Query(value = "major", encoded = true) major : String?,
+                   @Query(value = "minor", encoded = true) minor : String?,
+                   @Query(value = "rssi", encoded = true) rssi : String?,
+                   @Query(value = "proximity", encoded = true) proximity : String?): Call<BeaconResponse>
 
     @get:GET(".")
     val getEntities: Call<MutableList<Entity>>
@@ -22,14 +29,14 @@ interface NetworkService {
         private var authRetrofitService: NetworkService? = null
 
         fun getAuthRetrofitService(baseUrl: String): NetworkService? {
-            if (authRetrofitService == null) {
+//            if (authRetrofitService == null) {
                 val client = initOkHttpClient()
                 val converter = GsonBuilder()
                     .excludeFieldsWithoutExposeAnnotation()
                     .create()
                 val retrofit = getRetrofit(client, converter, baseUrl)
                 authRetrofitService = retrofit.create(NetworkService::class.java)
-            }
+//            }
             return authRetrofitService
         }
 
