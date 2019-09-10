@@ -1,5 +1,6 @@
 package com.respire.startapp.beacon
 
+import android.app.Notification
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
@@ -15,16 +16,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 class AppBeaconService : Service() {
 
     private var networkService: NetworkService? = null
     val beaconMonitor: BeaconMonitor by lazy {
         BeaconMonitor(this) { beacon ->
-                            Toast.makeText(
-                    this,
-                    "Sent beacon to server with major ${beacon.major}",
-                    Toast.LENGTH_SHORT
-                ).show()
+            Toast.makeText(
+                this,
+                "Sent beacon to server with major ${beacon.major}",
+                Toast.LENGTH_SHORT
+            ).show()
             sendBeaconDataToServer(beacon)
         }
     }
@@ -33,6 +35,8 @@ class AppBeaconService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        val NOTIFICATION_ID = (System.currentTimeMillis() % 10000).toInt()
+        startForeground(NOTIFICATION_ID, Notification.Builder(this).build())
         Log.e("onCreate", "onCreate")
         networkService =
             NetworkService.getAuthRetrofitService("https://clients.hmsl.nl")
@@ -56,8 +60,8 @@ class AppBeaconService : Service() {
 //                null
 //            )
 //        )
-        beaconMonitor.startRanging()
-        return super.onStartCommand(intent, flags, startId)
+        beaconMonitor.startMonitoring()
+        return START_STICKY
     }
 
     private fun sendBeaconDataToServer(beaconData: BeaconData) {
