@@ -1,6 +1,7 @@
 package com.respire.startapp.beacon
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.estimote.sdk.Beacon
 import com.estimote.sdk.BeaconManager
@@ -12,7 +13,7 @@ import java.util.*
 class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -> Unit) {
 
     var beaconManager: BeaconManager = BeaconManager(context)
-    var uuid = UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D")
+    var uuid : UUID? = null /*UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D")*/
     var beaconsListForServer = mutableListOf<Beacon>()
 
     fun startMonitoring() {
@@ -58,6 +59,7 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
 
         beaconManager.setRangingListener(BeaconManager.RangingListener() { region, list ->
             if (list.isNotEmpty()) {
+                list.forEach{ Log.e("Detected beacon", it.toString())}
                 calculateBeacon(list)
             }
         })
