@@ -19,8 +19,8 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
 
     fun startMonitoring() {
         beaconManager.connect {
-            beaconManager.setBackgroundScanPeriod(2000, 3000);
-            beaconManager.setForegroundScanPeriod(2000, 3000);
+            beaconManager.setBackgroundScanPeriod(1000, 2000)
+            beaconManager.setForegroundScanPeriod(1000, 2000)
             beaconManager.startMonitoring(
                 Region(
                     "monitored region",
@@ -56,30 +56,6 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
                 }
             }
         })
-
-        beaconManager.setRangingListener(BeaconManager.RangingListener() { region, list ->
-            if (list.isNotEmpty()) {
-                list.forEach {
-                    Log.e(
-                        "Detected beacon",
-                        "$it and proximity = ${Utils.computeAccuracy(it)}"
-                    )
-                }
-                calculateBeacon(list)
-            }
-        })
-    }
-
-    fun startRanging() {
-        beaconManager.connect {
-            beaconManager.startRanging(
-                Region(
-                    "monitored region",
-                    uuid,
-                    null, null
-                )
-            )
-        }
 
         beaconManager.setRangingListener(BeaconManager.RangingListener() { region, list ->
             if (list.isNotEmpty()) {

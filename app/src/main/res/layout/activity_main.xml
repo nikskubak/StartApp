@@ -29,14 +29,29 @@
 
     <!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
-    <com.google.android.material.button.MaterialButton
-            android:id="@+id/startButton"
+    <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_button_text"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/startButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start_button_text" />
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stop_button_text"
+                android:layout_gravity="center_horizontal"/>
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

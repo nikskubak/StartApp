@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun initViews() {
         startButton.setOnClickListener { viewModel.startBeaconMonitoring() }
+        stopButton.setOnClickListener { viewModel.stopBeaconMonitoring() }
     }
 
 }

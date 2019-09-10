@@ -17,6 +17,7 @@ import com.respire.startapp.network.NetworkUtil
 import com.respire.startapp.repositories.EntityRepository
 import javax.inject.Inject
 
+
 class MainViewModel constructor(val app: Application, var entityRepository: EntityRepository) :
     ObservableAndroidViewModel(app) {
 
@@ -51,6 +52,11 @@ class MainViewModel constructor(val app: Application, var entityRepository: Enti
 
         // Create repeat alarm.
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, startTime, intervalTime, pendingIntent)
+    }
+
+    fun stopBeaconMonitoring() {
+        val serviceIntent = Intent(app, AppBeaconService::class.java)
+        app.stopService(serviceIntent)
     }
 
     class Factory @Inject constructor(

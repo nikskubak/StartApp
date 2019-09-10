@@ -1,32 +1,37 @@
 package com.respire.startapp.beacon
 
-import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
+import com.respire.startapp.R
 import com.respire.startapp.base.Result
 import com.respire.startapp.database.Entity
 import com.respire.startapp.network.NetworkService
+import com.respire.startapp.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class AppBeaconService : Service() {
 
     private var networkService: NetworkService? = null
+    val CHANNEL_ID = "ForegroundServiceChannel"
     val beaconMonitor: BeaconMonitor by lazy {
         BeaconMonitor(this) { beacon ->
-            Toast.makeText(
-                this,
-                "Sent beacon to server with major ${beacon.major}",
-                Toast.LENGTH_SHORT
-            ).show()
+//            Toast.makeText(
+//                this,
+//                "Sent beacon to server with major ${beacon.major}",
+//                Toast.LENGTH_SHORT
+//            ).show()
             sendBeaconDataToServer(beacon)
         }
     }
@@ -35,8 +40,6 @@ class AppBeaconService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        val NOTIFICATION_ID = (System.currentTimeMillis() % 10000).toInt()
-        startForeground(NOTIFICATION_ID, Notification.Builder(this).build())
         Log.e("onCreate", "onCreate")
         networkService =
             NetworkService.getAuthRetrofitService("https://clients.hmsl.nl")
@@ -51,17 +54,37 @@ class AppBeaconService : Service() {
         Log.e("onStartCommand", "onStartCommand")
         val resultLivaData = MutableLiveData<Result<MutableList<Entity>>>()
         val result = Result<MutableList<Entity>>()
-//        sendBeaconDataToServer(
-//            BeaconData(
-//                "1",
-//                "1",
-//                "1",
-//                "1",
-//                null
-//            )
-//        )
+        val input = intent?.getStringExtra("inputExtra")
+        createNotificationChannel()
+        val notificationIntent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0, notificationIntent, 0
+        )
+
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("Beacons monitoring")
+            .setContentText(input)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentIntent(pendingIntent)
+            .build()
+
+        startForeground(1, notification)
         beaconMonitor.startMonitoring()
         return START_STICKY
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val serviceChannel = NotificationChannel(
+                CHANNEL_ID,
+                "Beacons monitoring channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+
+            val manager = getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(serviceChannel)
+        }
     }
 
     private fun sendBeaconDataToServer(beaconData: BeaconData) {
