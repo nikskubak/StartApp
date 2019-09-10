@@ -19,7 +19,8 @@ interface NetworkService {
                    @Query(value = "major", encoded = true) major : String?,
                    @Query(value = "minor", encoded = true) minor : String?,
                    @Query(value = "rssi", encoded = true) rssi : String?,
-                   @Query(value = "proximity", encoded = true) proximity : String?): Call<BeaconResponse>
+                   @Query(value = "proximity", encoded = true) proximity : String?,
+                   @Query(value = "inRange", encoded = true) inRange : Boolean?): Call<BeaconResponse>
 
     @get:GET(".")
     val getEntities: Call<MutableList<Entity>>

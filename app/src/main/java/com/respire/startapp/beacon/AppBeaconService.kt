@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.respire.startapp.base.Result
 import com.respire.startapp.database.Entity
@@ -14,11 +15,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class BeaconService : Service() {
+class AppBeaconService : Service() {
 
     private var networkService: NetworkService? = null
     val beaconMonitor: BeaconMonitor by lazy {
         BeaconMonitor(this) { beacon ->
+                            Toast.makeText(
+                    this,
+                    "Sent beacon to server with major ${beacon.major}",
+                    Toast.LENGTH_SHORT
+                ).show()
             sendBeaconDataToServer(beacon)
         }
     }
@@ -63,7 +69,8 @@ class BeaconService : Service() {
                         beaconData.major,
                         beaconData.minor,
                         beaconData.rssi,
-                        beaconData.proximity
+                        beaconData.proximity,
+                        beaconData.inRange
                     )?.execute()
                     Log.e("sendBeaconDataToServer", response?.body()?.toString())
                 }
@@ -76,8 +83,8 @@ class BeaconService : Service() {
     }
 
     inner class LocalBinder : Binder() {
-        internal val service: BeaconService
-            get() = this@BeaconService
+        internal val service: AppBeaconService
+            get() = this@AppBeaconService
     }
 
 }

@@ -16,7 +16,7 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
         <service
-                android:name=".beacon.BeaconService"
+                android:name=".beacon.AppBeaconService"
                 android:enabled="true"
                 android:exported="true"></service>
 

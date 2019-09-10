@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.respire.startapp.base.ObservableAndroidViewModel
 import com.respire.startapp.base.Result
-import com.respire.startapp.beacon.BeaconService
+import com.respire.startapp.beacon.AppBeaconService
 import com.respire.startapp.database.Entity
 import com.respire.startapp.network.NetworkUtil
 import com.respire.startapp.repositories.EntityRepository
@@ -25,7 +25,7 @@ class MainViewModel constructor(val app: Application, var entityRepository: Enti
     }
 
     fun startBeaconMonitoring() {
-        app.startService(Intent(app, BeaconService::class.java))
+        app.startService(Intent(app, AppBeaconService::class.java))
         startServiceByAlarm(app)
     }
 
@@ -36,7 +36,7 @@ class MainViewModel constructor(val app: Application, var entityRepository: Enti
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         // Create intent to invoke the background service.
-        val intent = Intent(context, BeaconService::class.java)
+        val intent = Intent(context, AppBeaconService::class.java)
         val pendingIntent =
             PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 

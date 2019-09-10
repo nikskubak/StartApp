@@ -13,11 +13,12 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
 
     var beaconManager: BeaconManager = BeaconManager(context)
     var uuid = UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D")
+    var beaconsListForServer = mutableListOf<Beacon>()
 
     fun startMonitoring() {
         beaconManager.connect {
             beaconManager.startMonitoring(
-               Region(
+                Region(
                     "monitored region",
                     uuid,
                     null, null
@@ -34,7 +35,7 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
                         "Detected beacon with major ${beacons[0].major}",
                         Toast.LENGTH_SHORT
                     ).show()
-                    beacons.forEach { sendBeacon(buildBeaconData(it)) }
+                    beacons.forEach { sendBeacon(buildBeaconData(it, true, Utils.computeAccuracy(it))) }
                 }
             }
 
@@ -57,25 +58,81 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
 
         beaconManager.setRangingListener(BeaconManager.RangingListener() { region, list ->
             if (list.isNotEmpty()) {
-//                Toast.makeText(
-//                    context,
-//                    "Detected beacon with major ${list[0].major}",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-                list.forEach {
-                    sendBeacon(buildBeaconData(it))
-                }
+                calculateBeacon(list)
             }
         })
     }
 
-    private fun buildBeaconData(beacon: Beacon): BeaconData {
+    private val rangeDistance = 200
+
+    private fun calculateBeacon(beacons: MutableList<Beacon>) {
+        if(beacons.isNullOrEmpty()) {
+            for (i in 0 until beacons.size) {
+                if (beaconsListForServer.isEmpty()) {
+                    val proximity = Utils.computeAccuracy(beacons[i])
+                    if (proximity < rangeDistance) {
+                        beaconsListForServer.add(beacons[i])
+                        sendBeacon(buildBeaconData(beacons[i], true, proximity))
+                    }
+                } else {
+                    val proximity = Utils.computeAccuracy(beacons[i])
+                    var existBeacon = getExistBeacon(beacons[i])
+                    if (existBeacon != null) {
+                        val existProximity = Utils.computeAccuracy(existBeacon)
+                        if (proximity < rangeDistance) {
+                            if (existProximity > rangeDistance) {
+                                sendBeacon(buildBeaconData(beacons[i], true, proximity))
+                                beaconsListForServer.remove(existBeacon)
+                                beaconsListForServer.add(beacons[i])
+                            } else {
+                                //nothing
+                            }
+                        } else {
+                            if (existProximity > rangeDistance) {
+                                //nothing
+                            } else {
+                                sendBeacon(buildBeaconData(beacons[i], false, proximity))
+                                beaconsListForServer.remove(existBeacon)
+                                beaconsListForServer.add(beacons[i])
+                            }
+                        }
+                    } else {
+                        if (proximity < rangeDistance) {
+                            beaconsListForServer.add(beacons[i])
+                            sendBeacon(buildBeaconData(beacons[i], true, proximity))
+                        }
+                    }
+                }
+            }
+        }else{
+            if (beaconsListForServer.isEmpty()) {
+                //nothing
+            }else{
+                for (i in 0 until beaconsListForServer.size){
+                    sendBeacon(buildBeaconData(beaconsListForServer[i], false, -1.0))
+                    beaconsListForServer.remove(beaconsListForServer[i])
+                }
+            }
+        }
+    }
+
+    private fun getExistBeacon(beacon: Beacon): Beacon? {
+        for (i in 0 until beaconsListForServer.size) {
+            if (beaconsListForServer[i].equals(beacon)) {
+                return beaconsListForServer[i]
+            }
+        }
+        return null
+    }
+
+    private fun buildBeaconData(beacon: Beacon, inRange: Boolean, proximity: Double): BeaconData {
         return BeaconData(
             beacon.proximityUUID.toString(),
             beacon.major.toString(),
             beacon.minor.toString(),
             beacon.rssi.toString(),
-            Utils.computeAccuracy(beacon).toString()
+            proximity.toString(),
+            inRange
         )
     }
 }

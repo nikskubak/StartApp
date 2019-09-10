@@ -43,7 +43,7 @@ public class BootDeviceReceiver extends BroadcastReceiver {
                 Log.e(TAG_BOOT_BROADCAST_RECEIVER, message);
 
                 // This intent is used to start background service. The same service will be invoked for each invoke in the loop.
-                Intent startServiceIntent = new Intent(context, BeaconService.class);
+                Intent startServiceIntent = new Intent(context, AppBeaconService.class);
                 context.startService(startServiceIntent);
 
                 // Current thread will sleep one second.
@@ -63,7 +63,7 @@ public class BootDeviceReceiver extends BroadcastReceiver {
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
         // Create intent to invoke the background service.
-        Intent intent = new Intent(context, BeaconService.class);
+        Intent intent = new Intent(context, AppBeaconService.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long startTime = System.currentTimeMillis();
