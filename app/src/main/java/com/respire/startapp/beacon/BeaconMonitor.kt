@@ -16,25 +16,18 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
     var beaconsListForServer = mutableListOf<Beacon>()
     var monitoredBeacons = mutableListOf<Beacon>()
     private val rangeDistance = 2
+    val region = Region(
+        "monitored region",
+        uuid,
+        null, null
+    )
 
     fun startMonitoring() {
         beaconManager.connect {
             beaconManager.setBackgroundScanPeriod(1000, 2000)
             beaconManager.setForegroundScanPeriod(1000, 2000)
-            beaconManager.startMonitoring(
-                Region(
-                    "monitored region",
-                    uuid,
-                    null, null
-                )
-            )
-            beaconManager.startRanging(
-                Region(
-                    "monitored region",
-                    uuid,
-                    null, null
-                )
-            )
+            beaconManager.startMonitoring(region)
+            beaconManager.startRanging(region)
         }
 
         beaconManager.setMonitoringListener(object : BeaconManager.MonitoringListener {
@@ -153,5 +146,10 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
             proximity.toString(),
             inRange
         )
+    }
+
+    fun stopMonitoring() {
+        beaconManager.stopMonitoring(region)
+        beaconManager.stopRanging(region)
     }
 }

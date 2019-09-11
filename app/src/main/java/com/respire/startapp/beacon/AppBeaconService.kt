@@ -9,6 +9,7 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.respire.startapp.R
@@ -27,11 +28,11 @@ class AppBeaconService : Service() {
     val CHANNEL_ID = "ForegroundServiceChannel"
     val beaconMonitor: BeaconMonitor by lazy {
         BeaconMonitor(this) { beacon ->
-//            Toast.makeText(
-//                this,
-//                "Sent beacon to server with major ${beacon.major}",
-//                Toast.LENGTH_SHORT
-//            ).show()
+            Toast.makeText(
+                this,
+                "Sent beacon with major ${beacon.major}, inRange ${beacon.inRange}",
+                Toast.LENGTH_SHORT
+            ).show()
             sendBeaconDataToServer(beacon)
         }
     }
@@ -67,11 +68,17 @@ class AppBeaconService : Service() {
             .setContentText(input)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentIntent(pendingIntent)
+            .setVibrate(longArrayOf(0L))
             .build()
 
         startForeground(1, notification)
         beaconMonitor.startMonitoring()
         return START_STICKY
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        beaconMonitor.stopMonitoring()
     }
 
     private fun createNotificationChannel() {
