@@ -106,7 +106,7 @@ class AppBeaconService : Service() {
                         beaconData.proximity,
                         beaconData.inRange
                     )?.execute()
-                    Log.e("sendBeaconDataToServer", response?.body()?.toString())
+                    Log.e("sendBeaconDataToServer", "beacon was sent")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

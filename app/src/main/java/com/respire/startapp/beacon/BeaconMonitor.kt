@@ -46,6 +46,7 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
                         )
                     }
                     monitoredBeacons.clear()
+                    beaconsListForServer.clear()
                 }
             }
         })
