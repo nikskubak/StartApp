@@ -27,7 +27,7 @@ class MainViewModel constructor(val app: Application, var entityRepository: Enti
 
     fun startBeaconMonitoring() {
         app.startService(Intent(app, AppBeaconService::class.java))
-        startServiceByAlarm(app)
+//        startServiceByAlarm(app)
     }
 
     /* Create an repeat Alarm that will invoke the background service for each execution time.
