@@ -24,10 +24,11 @@ import kotlinx.coroutines.withContext
 
 class AppBeaconService : Service() {
 
+    var monitoringListener: MainActivity.MonitoringListener? = null
     private var networkService: NetworkService? = null
     val CHANNEL_ID = "ForegroundServiceChannel"
     val beaconMonitor: BeaconMonitor by lazy {
-        BeaconMonitor(this) { beacon ->
+        BeaconMonitor(this, monitoringListener) { beacon ->
             Toast.makeText(
                 this,
                 "Sent beacon with major ${beacon.major}, inRange ${beacon.inRange}",

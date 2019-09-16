@@ -6,10 +6,11 @@ import com.estimote.sdk.Beacon
 import com.estimote.sdk.BeaconManager
 import com.estimote.sdk.Region
 import com.estimote.sdk.Utils
+import com.respire.startapp.ui.MainActivity
 import java.util.*
 
 
-class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -> Unit) {
+class BeaconMonitor(var context: Context, var monitoringListener: MainActivity.MonitoringListener?, var sendBeacon: (beacon: BeaconData) -> Unit) {
 
     var beaconManager: BeaconManager = BeaconManager(context)
     var uuid: UUID? = UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D")
@@ -34,6 +35,7 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
             override
             fun onEnteredRegion(region: Region, beacons: List<Beacon>) {
                 monitoredBeacons.addAll(beacons)
+                monitoringListener?.onEnteredRegion()
             }
 
             override fun onExitedRegion(region: Region) {
@@ -48,6 +50,7 @@ class BeaconMonitor(var context: Context, var sendBeacon: (beacon: BeaconData) -
                     monitoredBeacons.clear()
                     beaconsListForServer.clear()
                 }
+                monitoringListener?.onExitedRegion()
             }
         })
 
