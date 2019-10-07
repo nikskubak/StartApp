@@ -3,9 +3,9 @@ package com.respire.startapp.di
 import com.respire.startapp.App
 import dagger.Component
 import dagger.android.AndroidInjectionModule
-import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
+
 
 @Singleton
 @Component(
@@ -16,11 +16,25 @@ import javax.inject.Singleton
         ImplementationsModule::class,
         ContextModule::class]
 )
-interface ApplicationComponent : AndroidInjector<App> {
+interface ApplicationComponent {
+
+//    @Component.Builder
+//    abstract class Builder : AndroidInjector.Builder<App>() {
+//        abstract fun contextModule(contextModule: ContextModule): Builder
+//        abstract fun dataModule(dataModule: DataModule): Builder
+//    }
 
     @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<App>() {
-        abstract fun contextModule(contextModule: ContextModule): Builder
-        abstract fun dataModule(dataModule: DataModule): Builder
+    interface Builder {
+
+//        @BindsInstance
+//        fun application(app: App): Builder
+        fun contextModule(contextModule: ContextModule): Builder
+        fun dataModule(dataModule: DataModule): Builder
+        fun build(): ApplicationComponent
     }
+
+    fun inject(app: App)
+//    fun inject(app: EntityRepositoryTest)
+
 }

@@ -8,7 +8,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class DataModule(context: Context) {
+open class DataModule(context: Context) {
 
     private var database: AppDatabase? = null
 
@@ -18,13 +18,13 @@ class DataModule(context: Context) {
 
     @Provides
     @Singleton
-    fun provideNetworkService(): NetworkService {
+    open fun provideNetworkService(): NetworkService {
         return NetworkService.getAuthRetrofitService("https://api.myjson.com/bins/cqx93/")!!
     }
 
     @Singleton
     @Provides
-    fun providesDatabase(): AppDatabase {
+    open fun providesDatabase(): AppDatabase {
         return database!!
     }
 }
