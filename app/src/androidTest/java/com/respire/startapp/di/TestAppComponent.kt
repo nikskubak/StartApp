@@ -16,15 +16,6 @@ import javax.inject.Singleton
         ContextModule::class]
 )
 interface TestAppComponent : ApplicationComponent {
-//    @Component.Builder
-//    interface Builder {
-//
-//        //        @BindsInstance
-////        fun application(app: App): Builder
-//        fun contextModule(contextModule: ContextModule): Builder
-//        fun dataModule(dataModule: DataModule): Builder
-//        fun build(): ApplicationComponent
-//    }
 
     fun inject(entityRepositoryTest: EntityRepositoryTest)
 
