@@ -12,6 +12,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
     }
     signingConfigs {
         release {
@@ -43,8 +49,11 @@ android {
     androidExtensions {
         experimental = true
     }
-}
 
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+}
 
 def retrofitVersion = '2.5.0'
 def daggerVersion = '2.22.1'
@@ -70,6 +79,7 @@ dependencies {
     androidTestImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
     androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
+    androidTestImplementation 'android.arch.persistence.room:testing:2.1.0'
 
     //Arch Components
     implementation "android.arch.lifecycle:extensions:1.1.1"
