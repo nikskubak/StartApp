@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.respire.startapp.R
 import com.respire.startapp.base.Result
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         AndroidInjection.inject(this)
         setContentView(R.layout.activity_main)
         initViews()
-        viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+        viewModel =  ViewModelProvider(this, vmFactory).get(MainViewModel::class.java)
         retrieveEntities()
     }
 
@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
             it.error?.printStackTrace()
             swipeRefreshLayout.isRefreshing = false
         })
+
     }
 
     private fun initViews() {
