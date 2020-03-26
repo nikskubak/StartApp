@@ -9,6 +9,6 @@ import dagger.Module
 internal abstract class ImplementationsModule {
 
     @Binds
-    internal abstract fun bindEntitynRepository(entityRepository: EntityRepositoryImpl): EntityRepository
+    internal abstract fun bindEntityRepository(entityRepository: EntityRepositoryImpl): EntityRepository
 
 }

@@ -1,32 +1,18 @@
 package com.respire.startapp
 
-import android.app.Activity
 import android.app.Application
-import androidx.fragment.app.Fragment
 import com.respire.startapp.di.ContextModule
 import com.respire.startapp.di.DaggerApplicationComponent
 import com.respire.startapp.di.DataModule
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class App : Application(), HasActivityInjector, HasSupportFragmentInjector {
+class App : Application(), HasAndroidInjector {
 
     @Inject
-    lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
-    @Inject
-    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return activityDispatchingAndroidInjector
-    }
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentDispatchingAndroidInjector
-    }
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     override fun onCreate() {
         super.onCreate()
@@ -35,5 +21,9 @@ class App : Application(), HasActivityInjector, HasSupportFragmentInjector {
             .dataModule(DataModule(this))
             .build()
             .inject(this)
+    }
+
+    override fun androidInjector(): AndroidInjector<Any> {
+        return dispatchingAndroidInjector
     }
 }
