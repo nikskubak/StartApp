@@ -19,7 +19,7 @@ class RoomsMigrationTest {
 
     @Rule
     @JvmField
-    var helper: MigrationTestHelper = MigrationTestHelper(
+    var helper: MigrationTestHelper  = MigrationTestHelper (
         InstrumentationRegistry.getInstrumentation(),
         AppDatabase::class.java.canonicalName,
         FrameworkSQLiteOpenHelperFactory()
