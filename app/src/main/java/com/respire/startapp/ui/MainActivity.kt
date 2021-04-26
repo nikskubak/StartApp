@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.format.DateUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -12,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.respire.startapp.R
 import com.respire.startapp.base.Result
 import com.respire.startapp.database.Entity
+import com.respire.startapp.notifications.NotificationScheduler
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), LifecycleOwner {
@@ -33,6 +36,12 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         initViews()
         viewModel =  ViewModelProvider(this, vmFactory).get(MainViewModel::class.java)
         retrieveEntities()
+        NotificationScheduler.Builder(this)
+            .title("Test title")
+            .description("Test description")
+            .icon(R.drawable.ic_launcher_foreground)
+            .notificationDate(Date().apply { time = System.currentTimeMillis() + DateUtils.MINUTE_IN_MILLIS })
+            .schedule()
     }
 
     private fun retrieveEntities() {
