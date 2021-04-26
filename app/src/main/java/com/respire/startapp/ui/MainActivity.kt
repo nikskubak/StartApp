@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         initViews()
         viewModel =  ViewModelProvider(this, vmFactory).get(MainViewModel::class.java)
         retrieveEntities()
-        NotificationScheduler.Builder(this)
+        NotificationScheduler.Builder(this, "unique notification id")
             .title("Test title")
             .description("Test description")
             .icon(R.drawable.ic_launcher_foreground)

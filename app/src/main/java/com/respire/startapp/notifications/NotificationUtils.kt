@@ -24,20 +24,24 @@ object NotificationScheduler {
 
     data class Builder(
         var context: Context,
+        var id: String,
         var notificationDate: Date = Date(),
         var title: String = "",
         var description: String = "",
         var icon: Int = R.drawable.ic_launcher_foreground
     ) {
+        fun id(id: String) = apply { this.id = id }
         fun notificationDate(date: Date) = apply { notificationDate = date }
         fun title(title: String) = apply { this.title = title }
         fun description(description: String) = apply { this.description = description }
         fun icon(icon: Int) = apply { this.icon = icon }
-        fun schedule() = scheduleNotification(context, notificationDate, title, description, icon)
+        fun schedule() =
+            scheduleNotification(context, id, notificationDate, title, description, icon)
     }
 
     private fun scheduleNotification(
         context: Context,
+        id: String,
         notificationDate: Date,
         title: String,
         description: String,
@@ -45,6 +49,7 @@ object NotificationScheduler {
     ) {
         val notificationRequest: WorkRequest =
             OneTimeWorkRequestBuilder<OneTimeScheduleWorker>()
+                .addTag(id)
                 .setInputData(
                     Data.Builder()
                         .putString(TITLE, title)
@@ -58,6 +63,10 @@ object NotificationScheduler {
                 )
                 .build()
         WorkManager.getInstance(context).enqueue(notificationRequest)
+    }
+
+    fun removeScheduledNotification(context: Context, id: String) {
+        WorkManager.getInstance(context).cancelAllWorkByTag(id)
     }
 }
 
