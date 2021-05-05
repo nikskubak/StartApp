@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
             .title("Test title")
             .description("Test description")
             .icon(R.drawable.ic_launcher_foreground)
+            .channelId("Notifications about events")
             .notificationDate(Date().apply { time = System.currentTimeMillis() + DateUtils.MINUTE_IN_MILLIS })
             .schedule()
     }
