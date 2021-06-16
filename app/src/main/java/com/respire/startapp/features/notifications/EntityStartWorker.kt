@@ -1,4 +1,4 @@
-package com.respire.startapp.notifications
+package com.respire.startapp.features.notifications
 
 import android.app.PendingIntent
 import android.content.Context
@@ -7,7 +7,7 @@ import androidx.core.app.TaskStackBuilder
 import androidx.work.WorkerParameters
 import com.respire.startapp.ui.MainActivity
 
-class AppointmentStartWorker(context: Context, workerParameters: WorkerParameters) :
+class EntityStartWorker(context: Context, workerParameters: WorkerParameters) :
     OneTimeScheduleWorker(context, workerParameters) {
 
     override fun getOpenIntent(openedData: String?): PendingIntent? {
