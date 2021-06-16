@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">StartApp</string>
     <string name="main_toolbar_title">Apps from Google Play</string>
+    <string name="rate_title">Сподобався наш додаток? 😊🤩</string>
+    <string name="trouble">Повідомити про проблему</string>
+    <string name="google_play">Оцінити</string>
 </resources>
