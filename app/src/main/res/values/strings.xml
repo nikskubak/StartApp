@@ -4,4 +4,6 @@
     <string name="rate_title">Сподобався наш додаток? 😊🤩</string>
     <string name="trouble">Повідомити про проблему</string>
     <string name="google_play">Оцінити</string>
+    <string name="mail_client">Выберите Gmail или другой почтовый клиент</string>
+    <string name="app_trouble">Проблема в приложении</string>
 </resources>
