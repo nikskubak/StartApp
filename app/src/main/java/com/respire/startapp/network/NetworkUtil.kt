@@ -9,8 +9,7 @@ class NetworkUtil {
     companion object {
         fun isConnected(context: Context): Boolean {
             val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            var activeNetworkInfo: NetworkInfo?
-            activeNetworkInfo = cm.activeNetworkInfo
+            var activeNetworkInfo: NetworkInfo? = cm.activeNetworkInfo
             return activeNetworkInfo != null && activeNetworkInfo.isConnected
         }
     }

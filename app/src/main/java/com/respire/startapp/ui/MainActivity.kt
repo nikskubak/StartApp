@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateUtils
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -15,7 +14,6 @@ import com.respire.startapp.R
 import com.respire.startapp.base.Result
 import com.respire.startapp.database.Entity
 import com.respire.startapp.features.notifications.NotificationScheduler
-import com.respire.startapp.features.reviews.InAppReviewHelper
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -40,9 +38,9 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         viewModel = ViewModelProvider(this, vmFactory).get(MainViewModel::class.java)
         retrieveEntities()
         showNotification()
-        InAppReviewHelper.showReviewDialog(this, this) {
-            Log.e("InAppReviewHelper", it.toString())
-        }
+//        InAppReviewHelper.showReviewDialog(this, this) {
+//            Log.e("InAppReviewHelper", it.toString())
+//        }
     }
 
     private fun showNotification() {
