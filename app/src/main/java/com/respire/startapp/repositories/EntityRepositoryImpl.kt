@@ -17,11 +17,11 @@ class EntityRepositoryImpl @Inject constructor(
     var database: AppDatabase
 ) : EntityRepository {
 
-    var availableEntities: MutableList<Entity>? = null
+    var availableEntities: List<Entity>? = null
 
-    override fun getEntities(isConnected : Boolean): LiveData<Result<MutableList<Entity>>> {
-        val resultLivaData = MutableLiveData<Result<MutableList<Entity>>>()
-        val result = Result<MutableList<Entity>>()
+    override fun getEntities(isConnected : Boolean): LiveData<Result<List<Entity>>> {
+        val resultLivaData = MutableLiveData<Result<List<Entity>>>()
+        val result = Result<List<Entity>>()
         if (availableEntities == null) {
             val job = CoroutineScope(Dispatchers.Main).launch {
                 try {
@@ -41,22 +41,22 @@ class EntityRepositoryImpl @Inject constructor(
         return resultLivaData
     }
 
-    private suspend fun retrieveEntitiesFromNetwork(): MutableList<Entity>? {
+    private suspend fun retrieveEntitiesFromNetwork(): List<Entity>? {
         return withContext(Dispatchers.IO) {
             val response = network.getEntities.execute()
-            val list = if (response.isSuccessful) response.body() else mutableListOf()
+            val list = if (response.isSuccessful) response.body()?.record else mutableListOf()
             saveEntitiesToDatabase(list)
             list
         }
     }
 
-    private suspend fun retrieveEntitiesFromDatabase(): MutableList<Entity>? {
+    private suspend fun retrieveEntitiesFromDatabase(): List<Entity>? {
         return withContext(Dispatchers.IO) {
             database.getEntityDao().getAll()
         }
     }
 
-    private suspend fun saveEntitiesToDatabase(entities: MutableList<Entity>?) {
+    private suspend fun saveEntitiesToDatabase(entities: List<Entity>?) {
         withContext(Dispatchers.IO) {
             database.getEntityDao().insertAll(entities)
         }

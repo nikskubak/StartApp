@@ -14,7 +14,7 @@ import javax.inject.Inject
 class MainViewModel constructor(val app: Application, var entityRepository: EntityRepository) :
     ObservableAndroidViewModel(app) {
 
-    fun getEntities(): LiveData<Result<MutableList<Entity>>> {
+    fun getEntities(): LiveData<Result<List<Entity>>> {
         return entityRepository.getEntities(NetworkUtil.isConnected(app.baseContext))
     }
 

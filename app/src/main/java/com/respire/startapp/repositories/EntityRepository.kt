@@ -5,5 +5,5 @@ import com.respire.startapp.base.Result
 import com.respire.startapp.database.Entity
 
 interface EntityRepository {
-    fun getEntities(isConnected : Boolean) : LiveData<Result<MutableList<Entity>>>
+    fun getEntities(isConnected : Boolean) : LiveData<Result<List<Entity>>>
 }

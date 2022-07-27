@@ -5,6 +5,7 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.google.gson.annotations.Expose
@@ -17,6 +18,7 @@ import java.util.*
 @Parcelize
 data class Entity(@PrimaryKey @Expose var id: String) : BaseObservable(), Parcelable {
 
+    @Ignore
     constructor() : this("")
 
     @Expose

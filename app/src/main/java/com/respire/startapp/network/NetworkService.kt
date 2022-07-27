@@ -3,6 +3,7 @@ package com.respire.startapp.network
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.respire.startapp.database.Entity
+import com.respire.startapp.database.Record
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit
 interface NetworkService {
 
     @get:GET(".")
-    val getEntities: Call<MutableList<Entity>>
+    val getEntities: Call<Record>
 
     companion object Factory {
 

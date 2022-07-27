@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun retrieveEntities() {
         swipeRefreshLayout.isRefreshing = true
-        viewModel.getEntities().observe(this, Observer<Result<MutableList<Entity>>> {
+        viewModel.getEntities().observe(this, {
             it.data?.let { data ->
                 adapter.data = data
                 adapter.notifyDataSetChanged()

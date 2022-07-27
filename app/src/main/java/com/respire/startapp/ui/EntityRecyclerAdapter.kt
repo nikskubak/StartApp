@@ -9,7 +9,7 @@ import com.respire.startapp.R
 import com.respire.startapp.database.Entity
 import com.respire.startapp.databinding.ItemRecyclerEntityBinding
 
-class EntityRecyclerAdapter(var data: MutableList<Entity>, var itemClick : (marketId : String?) -> Unit):
+class EntityRecyclerAdapter(var data: List<Entity>, var itemClick : (marketId : String?) -> Unit):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var context: Context

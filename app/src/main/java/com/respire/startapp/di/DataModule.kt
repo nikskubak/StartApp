@@ -19,7 +19,7 @@ open class DataModule(context: Context) {
     @Provides
     @Singleton
     open fun provideNetworkService(): NetworkService {
-        return NetworkService.getAuthRetrofitService("https://api.jsonbin.io/b/5e6a0c3831c25c2b0fd34054/")!!
+        return NetworkService.getAuthRetrofitService("https://api.jsonbin.io/v3/b/5e6a0c3831c25c2b0fd34054/")!!
     }
 
     @Singleton
