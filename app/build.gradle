@@ -60,6 +60,9 @@ android {
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 def retrofitVersion = '2.5.0'
@@ -114,6 +117,7 @@ dependencies {
     //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 
     //Dependency injection - Dagger 2
     implementation "javax.inject:javax.inject:1"
