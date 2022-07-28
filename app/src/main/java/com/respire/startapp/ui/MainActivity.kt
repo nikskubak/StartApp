@@ -7,15 +7,13 @@ import android.os.Bundle
 import android.text.format.DateUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.respire.startapp.R
-import com.respire.startapp.base.Result
-import com.respire.startapp.database.Entity
 import com.respire.startapp.features.notifications.NotificationScheduler
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.flow.collect
 import java.util.*
 import javax.inject.Inject
 
@@ -57,7 +55,15 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun retrieveEntities() {
         swipeRefreshLayout.isRefreshing = true
-        viewModel.getEntities().observe(this, {
+//        viewModel.getEntities().observe(this, {
+//            it.data?.let { data ->
+//                adapter.data = data
+//                adapter.notifyDataSetChanged()
+//            }
+//            it.error?.printStackTrace()
+//            swipeRefreshLayout.isRefreshing = false
+//        })
+        viewModel.entitiesLiveData.observe(this, {
             it.data?.let { data ->
                 adapter.data = data
                 adapter.notifyDataSetChanged()
@@ -65,7 +71,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
             it.error?.printStackTrace()
             swipeRefreshLayout.isRefreshing = false
         })
-
+        viewModel.getFlowEntities()
     }
 
     private fun initViews() {
