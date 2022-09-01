@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "scabbard.gradle"
 
 android {
     compileSdkVersion 32
@@ -62,6 +63,9 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    scabbard {
+        enabled true
     }
 }
 
@@ -137,3 +141,4 @@ dependencies {
     //Play Core (In-app-reviews)
     implementation 'com.google.android.play:core-ktx:1.8.1'
 }
+

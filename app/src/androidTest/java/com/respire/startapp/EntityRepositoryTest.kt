@@ -5,7 +5,6 @@ import androidx.test.runner.AndroidJUnit4
 import com.respire.startapp.di.ContextModule
 import com.respire.startapp.di.DaggerTestAppComponent
 import com.respire.startapp.di.DataModule
-import com.respire.startapp.repositories.EntityRepository
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test

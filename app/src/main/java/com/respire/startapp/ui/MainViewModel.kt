@@ -1,39 +1,39 @@
 package com.respire.startapp.ui
 
 import android.app.Application
-import androidx.lifecycle.*
-import com.respire.startapp.base.ObservableAndroidViewModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.respire.startapp.base.Result
 import com.respire.startapp.database.Entity
 import com.respire.startapp.network.NetworkUtil
 import com.respire.startapp.repositories.EntityFlowRepository
-import com.respire.startapp.repositories.EntityRepository
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel(
     val app: Application,
-    var entityRepository: EntityRepository,
     var entityFlowRepository: EntityFlowRepository
-) : ObservableAndroidViewModel(app) {
+) : AndroidViewModel(app) {
 
-    //LiveData for UI
-    val entitiesLiveData = MutableLiveData<Result<List<Entity>>>()
-    val errorMessageLiveData = MutableLiveData<String>()
-
-    //StateFlow for UI
+    var errorUiState = MutableStateFlow<String?>(null)
     private var _entitiesUiState = MutableStateFlow(Result<List<Entity>>())
     var entitiesUiState: StateFlow<Result<List<Entity>>> = _entitiesUiState
 
-    fun getEntities(): LiveData<Result<List<Entity>>> {
-        return entityRepository.getEntities(NetworkUtil.isConnected(app.baseContext))
+    fun getEntities() {
+        if (_entitiesUiState.value.data.isNullOrEmpty()) {
+            refreshEntities()
+        }
     }
 
-    fun getFlowEntities() {
+    fun refreshEntities() {
         viewModelScope.launch {
             entityFlowRepository.getEntities(NetworkUtil.isConnected(app.baseContext))
-                .catch { exception -> errorMessageLiveData.value = exception.message }
+                .catch { exception -> errorUiState.value = exception.message }
                 .collect {
                     _entitiesUiState.value = it
                 }
@@ -42,11 +42,10 @@ class MainViewModel(
 
     class Factory @Inject constructor(
         var application: Application,
-        var entityRepository: EntityRepository,
         var entityFlowRepository: EntityFlowRepository
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MainViewModel(application, entityRepository, entityFlowRepository) as T
+            return MainViewModel(application, entityFlowRepository) as T
         }
     }
 

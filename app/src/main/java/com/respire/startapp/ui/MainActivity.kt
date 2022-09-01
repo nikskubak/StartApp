@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,13 +14,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.respire.startapp.R
 import com.respire.startapp.databinding.ActivityMainBinding
 import com.respire.startapp.features.notifications.NotificationScheduler
+import com.respire.startapp.features.reviews.InAppReviewHelper
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
-
 
 class MainActivity : AppCompatActivity(), LifecycleOwner {
 
@@ -40,18 +40,33 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         setContentView(view)
         initViews()
         viewModel = ViewModelProvider(this, vmFactory).get(MainViewModel::class.java)
-        initLiveData()
+        initUiChangesListeners()
         retrieveEntities()
         showNotification()
-//        InAppReviewHelper.showReviewDialog(this, this) {
-//            Log.e("InAppReviewHelper", it.toString())
-//        }
+        InAppReviewHelper.showReviewDialog(this, this) {
+            Log.e("InAppReviewHelper", it.toString())
+        }
     }
 
-    private fun initLiveData() {
-        viewModel.errorMessageLiveData.observe(this, {
-            Snackbar.make(binding.rootView, it, Snackbar.LENGTH_SHORT).show()
-        })
+    private fun initUiChangesListeners() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.entitiesUiState.collect {
+                it.data?.let { data ->
+                    adapter.data = data
+                    adapter.notifyDataSetChanged()
+                }
+                it.error?.printStackTrace()
+                swipeRefreshLayout.isRefreshing = false
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.errorUiState.collect {
+                it?.let {
+                    Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+                    swipeRefreshLayout.isRefreshing = false
+                }
+            }
+        }
     }
 
     private fun showNotification() {
@@ -68,51 +83,15 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun retrieveEntities() {
         swipeRefreshLayout.isRefreshing = true
-//        viewModel.getEntities().observe(this, {
-//            it.data?.let { data ->
-//                adapter.data = data
-//                adapter.notifyDataSetChanged()
-//            }
-//            it.error?.printStackTrace()
-//            swipeRefreshLayout.isRefreshing = false
-//        })
-        viewModel.entitiesLiveData.observe(this, {
-            it.data?.let { data ->
-                adapter.data = data
-                adapter.notifyDataSetChanged()
-            }
-            it.error?.printStackTrace()
-            swipeRefreshLayout.isRefreshing = false
-        })
-
-
-        // Start a coroutine in the lifecycle scope
-        lifecycleScope.launch {
-            // repeatOnLifecycle launches the block in a new coroutine every time the
-            // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Trigger the flow and start listening for values.
-                // Note that this happens when lifecycle is STARTED and stops
-                // collecting when the lifecycle is STOPPED
-                viewModel.entitiesUiState.collect {
-                    Log.e("flow", "StateFlow result")
-                    it.data?.let { data ->
-                        adapter.data = data
-                        adapter.notifyDataSetChanged()
-                    }
-                    it.error?.printStackTrace()
-                    swipeRefreshLayout.isRefreshing = false
-                }
-//            }
-        }
-
-        viewModel.getFlowEntities()
+        viewModel.getEntities()
     }
 
     private fun initViews() {
         entitiesRecyclerView.layoutManager = layoutManager
         entitiesRecyclerView.adapter = adapter
-        swipeRefreshLayout.setOnRefreshListener { retrieveEntities() }
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshEntities()
+        }
     }
 
     private fun openAppInGooglePlay(it: String?) {
