@@ -9,9 +9,7 @@ import com.respire.startapp.base.Result
 import com.respire.startapp.database.Entity
 import com.respire.startapp.network.NetworkUtil
 import com.respire.startapp.repositories.EntityFlowRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,13 +29,13 @@ class MainViewModel(
     }
 
     fun refreshEntities() {
-        viewModelScope.launch {
-            entityFlowRepository.getEntities(NetworkUtil.isConnected(app.baseContext))
-                .catch { exception -> errorUiState.value = exception.message }
-                .collect {
-                    _entitiesUiState.value = it
-                }
-        }
+        entityFlowRepository.getEntities(NetworkUtil.isConnected(app.baseContext))
+            .onEach { _entitiesUiState.value = it }
+            .catch { exception ->
+                exception.printStackTrace()
+                errorUiState.value = exception.message
+            }
+            .launchIn(viewModelScope)
     }
 
     class Factory @Inject constructor(
