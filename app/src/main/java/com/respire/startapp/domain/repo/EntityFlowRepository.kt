@@ -1,8 +1,7 @@
-package com.respire.startapp.repositories
+package com.respire.startapp.domain.repo
 
-import androidx.lifecycle.LiveData
 import com.respire.startapp.base.Result
-import com.respire.startapp.database.Entity
+import com.respire.startapp.data.database.Entity
 import kotlinx.coroutines.flow.Flow
 
 interface EntityFlowRepository {

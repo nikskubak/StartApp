@@ -1,9 +1,10 @@
-package com.respire.startapp.repositories
+package com.respire.startapp.data.repositories
 
 import com.respire.startapp.base.Result
-import com.respire.startapp.database.AppDatabase
-import com.respire.startapp.database.Entity
-import com.respire.startapp.network.NetworkService
+import com.respire.startapp.data.database.AppDatabase
+import com.respire.startapp.data.database.Entity
+import com.respire.startapp.data.network.NetworkService
+import com.respire.startapp.domain.repo.EntityFlowRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

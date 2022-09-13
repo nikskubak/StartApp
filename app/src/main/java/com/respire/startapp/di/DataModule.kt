@@ -1,8 +1,8 @@
 package com.respire.startapp.di
 
 import android.content.Context
-import com.respire.startapp.database.AppDatabase
-import com.respire.startapp.network.NetworkService
+import com.respire.startapp.data.database.AppDatabase
+import com.respire.startapp.data.network.NetworkService
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

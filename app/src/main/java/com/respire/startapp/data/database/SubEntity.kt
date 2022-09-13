@@ -1,4 +1,4 @@
-package com.respire.startapp.database
+package com.respire.startapp.data.database
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable

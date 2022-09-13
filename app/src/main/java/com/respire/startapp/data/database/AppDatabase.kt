@@ -1,4 +1,4 @@
-package com.respire.startapp.database
+package com.respire.startapp.data.database
 
 import android.content.Context
 import androidx.room.Database

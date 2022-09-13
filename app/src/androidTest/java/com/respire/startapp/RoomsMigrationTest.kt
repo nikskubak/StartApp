@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
-import com.respire.startapp.database.AppDatabase
+import com.respire.startapp.data.database.AppDatabase
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
