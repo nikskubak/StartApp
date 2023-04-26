@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface EntityDao {
 
-    @Query("SELECT * from Entity ORDER BY date DESC")
+    @Query("SELECT * from Entity")
     fun getAll(): MutableList<Entity>?
 
     @Query("SELECT * from Entity where id = :id LIMIT 1")

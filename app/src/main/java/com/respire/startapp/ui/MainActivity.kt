@@ -8,16 +8,15 @@ import android.text.format.DateUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.respire.startapp.R
 import com.respire.startapp.databinding.ActivityMainBinding
 import com.respire.startapp.features.notifications.NotificationScheduler
 import com.respire.startapp.features.reviews.InAppReviewHelper
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -56,14 +55,14 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
                     adapter.notifyDataSetChanged()
                 }
                 it.error?.printStackTrace()
-                swipeRefreshLayout.isRefreshing = false
+                binding.swipeRefreshLayout.isRefreshing = false
             }
         }
         lifecycleScope.launchWhenStarted {
             viewModel.errorUiState.collect {
                 it?.let {
                     Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
-                    swipeRefreshLayout.isRefreshing = false
+                    binding.swipeRefreshLayout.isRefreshing = false
                 }
             }
         }
@@ -82,14 +81,14 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
     }
 
     private fun retrieveEntities() {
-        swipeRefreshLayout.isRefreshing = true
+        binding.swipeRefreshLayout.isRefreshing = true
         viewModel.getEntities()
     }
 
     private fun initViews() {
-        entitiesRecyclerView.layoutManager = layoutManager
-        entitiesRecyclerView.adapter = adapter
-        swipeRefreshLayout.setOnRefreshListener {
+        binding.entitiesRecyclerView.layoutManager = layoutManager
+        binding.entitiesRecyclerView.adapter = adapter
+        binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.refreshEntities()
         }
     }

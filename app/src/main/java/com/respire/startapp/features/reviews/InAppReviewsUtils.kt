@@ -9,9 +9,9 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.testing.FakeReviewManager
-import com.respire.startapp.BuildConfig
 import com.respire.startapp.R
-import kotlinx.android.synthetic.main.dialog_rate.view.*
+import com.respire.startapp.databinding.DialogRateBinding
+import com.respire.startapp.BuildConfig
 
 object InAppReviewHelper {
     fun reviewApp(
@@ -25,8 +25,10 @@ object InAppReviewHelper {
         request.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val reviewInfo = task.result
-                val flow = manager.launchReviewFlow(activity, reviewInfo)
-                flow.addOnCompleteListener { _ ->
+                manager.launchReviewFlow(activity, reviewInfo).addOnFailureListener {
+                    it.printStackTrace()
+                    onCompleteListener(false)
+                }.addOnCompleteListener {
                     onCompleteListener(true)
                 }
             } else {
@@ -66,14 +68,15 @@ object InAppReviewHelper {
     ) {
         val builder: AlertDialog.Builder =
             AlertDialog.Builder(context, R.style.CustomDialog)
-        val view = LayoutInflater.from(context).inflate(R.layout.dialog_rate, null, false)
-        builder.setView(view)
+        DialogRateBinding.inflate(LayoutInflater.from(context))
+        val binding = DialogRateBinding.inflate(LayoutInflater.from(context))
+        builder.setView(binding.root)
         val dialog: AlertDialog = builder.create()
-        view.rateButton.setOnClickListener {
-            fakeReviewApp(context, activity, onCompleteListener)
+        binding.rateButton.setOnClickListener {
+            reviewApp(context, activity, onCompleteListener)
             dialog.dismiss()
         }
-        view.problemButton.setOnClickListener {
+        binding.problemButton.setOnClickListener {
             openMailClient(activity)
             dialog.dismiss()
         }

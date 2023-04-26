@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "373025172433",
+    "firebase_url": "https://docscanner-6935c.firebaseio.com",
+    "project_id": "docscanner-6935c",
+    "storage_bucket": "docscanner-6935c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373025172433:android:17aab508fd54fb10f80ef0",
+        "android_client_info": {
+          "package_name": "com.respire.startapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373025172433-mqjlqp898l9ko39f8dq2phmre658bm4h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeccem6j8ToSxX-TGkJIHaOfBy8_N_AmA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373025172433-mqjlqp898l9ko39f8dq2phmre658bm4h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

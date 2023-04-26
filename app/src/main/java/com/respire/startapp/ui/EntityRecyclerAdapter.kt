@@ -3,9 +3,11 @@ package com.respire.startapp.ui
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.respire.startapp.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.respire.startapp.data.database.Entity
 import com.respire.startapp.databinding.ItemRecyclerEntityBinding
 
@@ -16,9 +18,8 @@ class EntityRecyclerAdapter(var data: List<Entity>, var itemClick : (marketId : 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context
-        val binding = DataBindingUtil.inflate<ItemRecyclerEntityBinding>(
+        val binding = ItemRecyclerEntityBinding.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_recycler_entity,
             parent,
             false
         )
@@ -33,14 +34,21 @@ class EntityRecyclerAdapter(var data: List<Entity>, var itemClick : (marketId : 
         (holder as EntityHolder).showEntity(data[position])
     }
 
-    inner class EntityHolder(var binding: ItemRecyclerEntityBinding) :
+    inner class EntityHolder(val binding: ItemRecyclerEntityBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun showEntity(entity: Entity) {
-            binding.viewModel = entity
-            binding.executePendingBindings()
             binding.container.setOnClickListener {
                 itemClick(data[adapterPosition].marketId)
             }
+            binding.name.text = entity.name
+            binding.description.text = entity.description
+            val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
+            Glide.with(binding.logo)
+                .load(entity.imageUrl)
+                .apply(RequestOptions().circleCrop())
+                .transition(DrawableTransitionOptions.withCrossFade(factory))
+                .placeholder(android.R.color.white)
+                .into(binding.logo)
         }
     }
 }
