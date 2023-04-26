@@ -1,14 +1,15 @@
-package com.respire.startapp.data.database
+package com.respire.startapp.data.sources.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.respire.startapp.data.sources.database.models.DbModel
 
-@Database(entities = [Entity::class], version = 1, exportSchema = true)
+@Database(entities = [DbModel::class], version = 1, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun getEntityDao () : EntityDao
+    abstract fun getDbModelDao () : DbModelDao
 
     companion object {
         var INSTANCE: AppDatabase? = null

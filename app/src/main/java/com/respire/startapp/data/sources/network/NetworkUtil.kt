@@ -1,4 +1,4 @@
-package com.respire.startapp.data.network
+package com.respire.startapp.data.sources.network
 
 import android.content.Context
 import android.net.ConnectivityManager

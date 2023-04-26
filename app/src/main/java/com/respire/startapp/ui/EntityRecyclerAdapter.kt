@@ -8,10 +8,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
-import com.respire.startapp.data.database.Entity
+import com.respire.startapp.data.sources.database.models.DbModel
 import com.respire.startapp.databinding.ItemRecyclerEntityBinding
+import com.respire.startapp.domain.models.DomainModel
 
-class EntityRecyclerAdapter(var data: List<Entity>, var itemClick : (marketId : String?) -> Unit):
+class EntityRecyclerAdapter(var data: List<DomainModel>, var itemClick : (marketId : String?) -> Unit):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var context: Context
@@ -36,7 +37,7 @@ class EntityRecyclerAdapter(var data: List<Entity>, var itemClick : (marketId : 
 
     inner class EntityHolder(val binding: ItemRecyclerEntityBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun showEntity(entity: Entity) {
+        fun showEntity(entity: DomainModel) {
             binding.container.setOnClickListener {
                 itemClick(data[adapterPosition].marketId)
             }

@@ -1,8 +1,9 @@
 package com.respire.startapp.di
 
 import android.content.Context
-import com.respire.startapp.data.database.AppDatabase
-import com.respire.startapp.data.network.NetworkService
+import com.respire.startapp.data.sources.database.AppDatabase
+import com.respire.startapp.data.sources.firestore.FirestoreManager
+import com.respire.startapp.data.sources.network.NetworkService
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -26,5 +27,11 @@ open class DataModule(context: Context) {
     @Provides
     open fun providesDatabase(): AppDatabase {
         return database!!
+    }
+
+    @Provides
+    @Singleton
+    open fun provideFirestore(): FirestoreManager {
+        return FirestoreManager()
     }
 }

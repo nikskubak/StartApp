@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.respire.startapp.base.Result
-import com.respire.startapp.data.database.Entity
-import com.respire.startapp.data.network.NetworkUtil
-import com.respire.startapp.domain.model.AccountEntity
+import com.respire.startapp.domain.models.AccountEntity
 import com.respire.startapp.domain.repo.AccountRepository
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject

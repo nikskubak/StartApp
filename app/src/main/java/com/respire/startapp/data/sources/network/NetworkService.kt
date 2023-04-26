@@ -1,11 +1,11 @@
-package com.respire.startapp.data.network
+package com.respire.startapp.data.sources.network
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.respire.startapp.data.database.Record
+import com.respire.startapp.data.sources.network.models.ResponseModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit
 
 interface NetworkService {
 
-    @get:GET(".")
-    val getEntities: Call<Record>
+    @GET(".")
+    suspend fun getEntities(): Response<ResponseModel>
 
     companion object Factory {
 

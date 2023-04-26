@@ -1,9 +1,9 @@
 package com.respire.startapp.data.repositories
 
-import com.respire.startapp.data.database.AppDatabase
-import com.respire.startapp.data.database.Entity
-import com.respire.startapp.data.network.NetworkService
-import com.respire.startapp.domain.model.AccountEntity
+import com.respire.startapp.data.sources.database.AppDatabase
+import com.respire.startapp.data.sources.database.models.DbModel
+import com.respire.startapp.data.sources.network.NetworkService
+import com.respire.startapp.domain.models.AccountEntity
 import com.respire.startapp.domain.repo.AccountRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,15 +27,15 @@ class AccountRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun retrieveEntitiesFromDatabase(): List<Entity>? {
+    private suspend fun retrieveEntitiesFromDatabase(): List<DbModel>? {
         return withContext(Dispatchers.IO) {
-            database.getEntityDao().getAll()
+            database.getDbModelDao().getAll()
         }
     }
 
-    private suspend fun saveEntitiesToDatabase(entities: List<Entity>?) {
+    private suspend fun saveEntitiesToDatabase(entities: List<DbModel>?) {
         withContext(Dispatchers.IO) {
-            database.getEntityDao().insertAll(entities)
+            database.getDbModelDao().insertAll(entities)
         }
     }
 

@@ -1,77 +1,61 @@
 package com.respire.startapp.data.repositories
 
-import android.util.Log
-import com.google.firebase.firestore.FirebaseFirestore
-import com.respire.startapp.base.Result
-import com.respire.startapp.data.database.AppDatabase
-import com.respire.startapp.data.database.Entity
-import com.respire.startapp.data.network.NetworkService
+import com.respire.startapp.data.sources.database.AppDatabase
+import com.respire.startapp.data.sources.database.models.DbModel
+import com.respire.startapp.data.sources.database.models.mapToDomainModel
+import com.respire.startapp.data.sources.firestore.FirestoreManager
+import com.respire.startapp.data.sources.firestore.models.mapToDbModel
+import com.respire.startapp.data.sources.firestore.models.mapToDomainModel
+import com.respire.startapp.data.sources.network.NetworkService
+import com.respire.startapp.data.sources.network.models.SubResponseModel
+import com.respire.startapp.data.sources.network.models.mapToDbModel
+import com.respire.startapp.domain.models.DomainModel
 import com.respire.startapp.domain.repo.EntityFlowRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class EntityFlowRepositoryImpl @Inject constructor(
     var network: NetworkService,
-    var database: AppDatabase
+    var database: AppDatabase,
+    var firestoreManager: FirestoreManager
 ) : EntityFlowRepository {
 
-    private suspend fun retrieveEntitiesFromNetwork(): List<Entity>? {
+    private suspend fun retrieveEntitiesFromNetwork(): List<SubResponseModel>? {
         return withContext(Dispatchers.IO) {
-            val response = network.getEntities.execute()
+            val response = network.getEntities()
             val list = if (response.isSuccessful) response.body()?.record else mutableListOf()
-            saveEntitiesToDatabase(list)
+            saveEntitiesToDatabase(list?.map { it.mapToDbModel() })
             list
         }
     }
 
-    private suspend fun retrieveEntitiesFromDatabase(): List<Entity>? {
+    private suspend fun retrieveEntitiesFromDatabase(): List<DbModel>? {
         return withContext(Dispatchers.IO) {
-            database.getEntityDao().getAll()
+            database.getDbModelDao().getAll()
         }
     }
 
-    private fun retrieveEntitiesFromFirestore(): Flow<List<Entity>> {
-        return callbackFlow {
-            var entities = mutableListOf<Entity>()
-            FirebaseFirestore.getInstance().collection("apps")
-                .get()
-                .addOnSuccessListener { data ->
-                    data.documents.forEach { doc ->
-                        doc.toObject(Entity::class.java)?.let {
-                            entities.add(it)
-                        }
-                    }
-                    trySend(entities)
-                }
-                .addOnFailureListener {
-                    it.printStackTrace()
-                    close(it)
-                }
-            awaitClose {
-                FirebaseFirestore.getInstance().clearPersistence()
-            }
-        }
-    }
-
-    private suspend fun saveEntitiesToDatabase(entities: List<Entity>?) {
+    private suspend fun saveEntitiesToDatabase(entities: List<DbModel>?) {
         withContext(Dispatchers.IO) {
-            database.getEntityDao().insertAll(entities)
+            database.getDbModelDao().insertAll(entities)
         }
     }
 
-    override fun getEntities(isConnected: Boolean): Flow<Result<List<Entity>>> {
-        return if (isConnected) retrieveEntitiesFromFirestore()
-            .onEach { saveEntitiesToDatabase(it) }
-            .map {
-                Result<List<Entity>>().apply {
-                    data = it
-                }
+    override fun getEntities(isConnected: Boolean): Flow<Result<List<DomainModel>>> {
+        return if (isConnected) firestoreManager.getData()
+            .onEach { firestoreModels ->
+                saveEntitiesToDatabase(firestoreModels.map { it.mapToDbModel() })
+            }
+            .map { firestoreModels ->
+                Result.success(firestoreModels.map { it.mapToDomainModel() })
             }
             .flowOn(Dispatchers.IO) else flow {
-            emit(Result<List<Entity>>().apply { data = retrieveEntitiesFromDatabase() })
+            emit(
+                Result.success(
+                    retrieveEntitiesFromDatabase().orEmpty().map { it.mapToDomainModel() })
+            )
         }
     }
 }

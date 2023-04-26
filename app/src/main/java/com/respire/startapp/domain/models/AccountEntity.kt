@@ -1,3 +1,3 @@
-package com.respire.startapp.domain.model
+package com.respire.startapp.domain.models
 
 data class AccountEntity(var accessToken : String? = null)

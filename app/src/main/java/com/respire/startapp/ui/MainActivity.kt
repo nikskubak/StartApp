@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateUtils
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.respire.startapp.R
 import com.respire.startapp.databinding.ActivityMainBinding
 import com.respire.startapp.features.notifications.NotificationScheduler
-import com.respire.startapp.features.reviews.InAppReviewHelper
 import dagger.android.AndroidInjection
 import java.util.*
 import javax.inject.Inject
@@ -38,23 +36,24 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         val view = binding.root
         setContentView(view)
         initViews()
-        viewModel = ViewModelProvider(this, vmFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, vmFactory)[MainViewModel::class.java]
         initUiChangesListeners()
         retrieveEntities()
-        showNotification()
-        InAppReviewHelper.showReviewDialog(this, this) {
-            Log.e("InAppReviewHelper", it.toString())
-        }
+//        showNotification()
+//        InAppReviewHelper.showReviewDialog(this, this) {
+//            Log.e("InAppReviewHelper", it.toString())
+//        }
     }
 
     private fun initUiChangesListeners() {
         lifecycleScope.launchWhenStarted {
             viewModel.entitiesUiState.collect {
-                it.data?.let { data ->
-                    adapter.data = data
+                if(it.isSuccess){
+                    adapter.data = it.getOrDefault(emptyList())
                     adapter.notifyDataSetChanged()
+                }else{
+                    it.exceptionOrNull()?.printStackTrace()
                 }
-                it.error?.printStackTrace()
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }

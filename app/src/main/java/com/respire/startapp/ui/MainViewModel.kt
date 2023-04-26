@@ -5,9 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.respire.startapp.base.Result
-import com.respire.startapp.data.database.Entity
-import com.respire.startapp.data.network.NetworkUtil
+import com.respire.startapp.data.sources.database.models.DbModel
+import com.respire.startapp.data.sources.network.NetworkUtil
+import com.respire.startapp.domain.models.DomainModel
 import com.respire.startapp.domain.repo.EntityFlowRepository
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -18,11 +18,11 @@ class MainViewModel(
 ) : AndroidViewModel(app) {
 
     var errorUiState = MutableStateFlow<String?>(null)
-    private var _entitiesUiState = MutableStateFlow(Result<List<Entity>>())
-    var entitiesUiState: StateFlow<Result<List<Entity>>> = _entitiesUiState
+    private var _entitiesUiState = MutableStateFlow(Result.success(emptyList<DomainModel>()))
+    var entitiesUiState: StateFlow<Result<List<DomainModel>>> = _entitiesUiState
 
     fun getEntities() {
-        if (_entitiesUiState.value.data.isNullOrEmpty()) {
+        if (_entitiesUiState.value.getOrNull().isNullOrEmpty()) {
             refreshEntities()
         }
     }
