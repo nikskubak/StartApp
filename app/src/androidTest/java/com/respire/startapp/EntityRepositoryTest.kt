@@ -5,7 +5,7 @@ import androidx.test.runner.AndroidJUnit4
 import com.respire.startapp.di.ContextModule
 import com.respire.startapp.di.DaggerTestAppComponent
 import com.respire.startapp.di.DataModule
-import com.respire.startapp.domain.repo.EntityFlowRepository
+import com.respire.startapp.domain.repo.ModelRepository
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @RunWith(AndroidJUnit4::class)
 class EntityRepositoryTest {
     @Inject
-    lateinit var entityRepository: EntityFlowRepository
+    lateinit var entityRepository: ModelRepository
 
     @Before
     fun setUp() {

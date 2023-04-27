@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
     lateinit var vmFactory: MainViewModel.Factory
     lateinit var viewModel: MainViewModel
     private val layoutManager = LinearLayoutManager(this)
-    private val adapter: EntityRecyclerAdapter = EntityRecyclerAdapter(mutableListOf()) {
+    private val adapter: ModelRecyclerAdapter = ModelRecyclerAdapter(mutableListOf()) {
         openAppInGooglePlay(it)
     }
     private lateinit var binding: ActivityMainBinding
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         initViews()
         viewModel = ViewModelProvider(this, vmFactory)[MainViewModel::class.java]
         initUiChangesListeners()
-        retrieveEntities()
+        retrieveModels()
 //        showNotification()
 //        InAppReviewHelper.showReviewDialog(this, this) {
 //            Log.e("InAppReviewHelper", it.toString())
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun initUiChangesListeners() {
         lifecycleScope.launchWhenStarted {
-            viewModel.entitiesUiState.collect {
+            viewModel.modelsUiState.collect {
                 if(it.isSuccess){
                     adapter.data = it.getOrDefault(emptyList())
                     adapter.notifyDataSetChanged()
@@ -79,16 +79,16 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
             .schedule()
     }
 
-    private fun retrieveEntities() {
+    private fun retrieveModels() {
         binding.swipeRefreshLayout.isRefreshing = true
-        viewModel.getEntities()
+        viewModel.getModels()
     }
 
     private fun initViews() {
         binding.entitiesRecyclerView.layoutManager = layoutManager
         binding.entitiesRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.refreshEntities()
+            viewModel.refreshModels()
         }
     }
 

@@ -2,7 +2,7 @@ package com.respire.startapp.data.sources.network
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.respire.startapp.data.sources.network.models.ResponseModel
+import com.respire.startapp.data.sources.network.models.ApiModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 interface NetworkService {
 
     @GET(".")
-    suspend fun getEntities(): Response<ResponseModel>
+    suspend fun getEntities(): Response<ApiModel>
 
     companion object Factory {
 

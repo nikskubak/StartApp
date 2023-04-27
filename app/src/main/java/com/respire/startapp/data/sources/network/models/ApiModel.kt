@@ -3,11 +3,10 @@ package com.respire.startapp.data.sources.network.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.respire.startapp.data.sources.database.models.DbModel
-import com.respire.startapp.data.sources.firestore.models.FirestoreModel
 
-data class ResponseModel(@Expose var record: List<SubResponseModel>)
+data class ApiModel(@Expose var record: List<ApiSubModel>)
 
-data class SubResponseModel(
+data class ApiSubModel(
     @Expose
     var id: String,
     @Expose
@@ -18,10 +17,10 @@ data class SubResponseModel(
     @SerializedName("market_id")
     var marketId: String? = null,
     @Expose
-    @SerializedName("image_url")
+    @SerializedName("imageUrl")
     var imageUrl: String? = null
 )
 
-fun SubResponseModel.mapToDbModel(): DbModel {
+fun ApiSubModel.mapToDbModel(): DbModel {
     return DbModel(id, name, description, marketId, imageUrl)
 }

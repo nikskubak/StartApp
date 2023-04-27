@@ -1,6 +1,6 @@
 package com.respire.startapp.domain.models
 
-data class DomainModel(
+data class Model(
     var id: String,
     var name: String? = null,
     var description: String? = null,

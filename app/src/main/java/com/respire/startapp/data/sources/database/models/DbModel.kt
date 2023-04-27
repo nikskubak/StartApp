@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.respire.startapp.domain.models.DomainModel
+import com.respire.startapp.domain.models.Model
 import kotlinx.android.parcel.Parcelize
 
 
@@ -23,6 +23,6 @@ data class DbModel(
     constructor() : this("")
 }
 
-fun DbModel.mapToDomainModel(): DomainModel {
-    return DomainModel(id, name, description, marketId, imageUrl)
+fun DbModel.mapToDomainModel(): Model {
+    return Model(id, name, description, marketId, imageUrl)
 }
