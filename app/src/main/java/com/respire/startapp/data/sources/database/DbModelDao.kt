@@ -2,7 +2,7 @@ package com.respire.startapp.data.sources.database
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.respire.startapp.data.sources.database.models.DbModel
 
@@ -15,10 +15,10 @@ interface DbModelDao {
     @Query("SELECT * from DbModel where id = :id LIMIT 1")
     fun get(id : String): DbModel?
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(entity: DbModel) : Long
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(entities: List<DbModel>?) : List<Long>
 
     @Query("DELETE from DbModel")

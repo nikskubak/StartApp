@@ -48,10 +48,10 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
     private fun initUiChangesListeners() {
         lifecycleScope.launchWhenStarted {
             viewModel.modelsUiState.collect {
-                if(it.isSuccess){
+                if (it.isSuccess) {
                     adapter.data = it.getOrDefault(emptyList())
                     adapter.notifyDataSetChanged()
-                }else{
+                } else {
                     it.exceptionOrNull()?.printStackTrace()
                 }
                 binding.swipeRefreshLayout.isRefreshing = false
@@ -63,6 +63,12 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
                     Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
                     binding.swipeRefreshLayout.isRefreshing = false
                 }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.baseUiState.collect {
+                binding.swipeRefreshLayout.isRefreshing = it.isLoading
             }
         }
     }
