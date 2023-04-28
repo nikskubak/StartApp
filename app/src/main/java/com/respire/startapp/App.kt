@@ -1,6 +1,7 @@
 package com.respire.startapp
 
 import android.app.Application
+import com.respire.startapp.di.ApplicationComponent
 import com.respire.startapp.di.ContextModule
 import com.respire.startapp.di.DaggerApplicationComponent
 import com.respire.startapp.di.DataModule
@@ -14,13 +15,17 @@ class App : Application(), HasAndroidInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
+    companion object{
+        lateinit var component: ApplicationComponent
+    }
+
     override fun onCreate() {
         super.onCreate()
-        DaggerApplicationComponent.builder()
+        component = DaggerApplicationComponent.builder()
             .contextModule(ContextModule(this))
             .dataModule(DataModule(this))
             .build()
-            .inject(this)
+        component.inject(this)
     }
 
     override fun androidInjector(): AndroidInjector<Any> {
