@@ -1,8 +1,11 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-parcelize'
-apply plugin: 'com.google.firebase.crashlytics'
+plugins {
+    id 'com.google.dagger.hilt.android'
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'com.google.firebase.crashlytics'
+}
 
 android {
     compileSdkVersion 33
@@ -169,6 +172,14 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1'
     implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
+
+    //Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
 }
 apply plugin: 'com.google.gms.google-services'
+
+kapt {
+    correctErrorTypes true
+}
 
