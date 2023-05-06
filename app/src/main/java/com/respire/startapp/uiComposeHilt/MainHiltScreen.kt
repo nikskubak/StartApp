@@ -17,6 +17,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.respire.startapp.R
@@ -25,7 +27,9 @@ import com.respire.startapp.uiComposeHilt.theme.White
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun MainHiltScreen(viewModel: MainComposeHiltViewModel) {
+fun MainHiltScreen(navController: NavHostController) {
+    val viewModel = hiltViewModel<MainComposeHiltViewModel>()
+
     val models by viewModel.modelsUiState.collectAsState()
     viewModel.getModels()
     Scaffold(
