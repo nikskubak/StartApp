@@ -5,7 +5,9 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.respire.startapp.data.sources.network.NetworkUtil
 import com.respire.startapp.domain.models.Model
@@ -17,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainComposeHiltViewModel @Inject constructor(
     var modelRepository: ModelRepository,
-    var app : Application
+    var app: Application,
+    val savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(app) {
 
     private var _baseUiState = MutableStateFlow(BaseUiState())
@@ -29,6 +32,7 @@ class MainComposeHiltViewModel @Inject constructor(
 
     fun getModels() {
         if (_modelsUiState.value.getOrNull().isNullOrEmpty()) {
+            Log.e("getModels", "getModels")
             refreshModels()
         }
     }
@@ -50,7 +54,7 @@ class MainComposeHiltViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-     fun openAppInGooglePlay(it: String?) {
+    fun openAppInGooglePlay(it: String?) {
         try {
             app.startActivity(
                 Intent(
