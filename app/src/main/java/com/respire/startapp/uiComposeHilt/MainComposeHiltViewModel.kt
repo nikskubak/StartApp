@@ -6,21 +6,18 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.respire.startapp.data.sources.network.NetworkUtil
 import com.respire.startapp.domain.models.Model
 import com.respire.startapp.domain.repo.ModelRepository
-import com.respire.startapp.ui.BaseUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
 class MainComposeHiltViewModel @Inject constructor(
-    @ApplicationContext val app: Application,
-    var modelRepository: ModelRepository
+    var modelRepository: ModelRepository,
+    var app : Application
 ) : AndroidViewModel(app) {
 
     private var _baseUiState = MutableStateFlow(BaseUiState())

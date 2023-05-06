@@ -19,16 +19,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.respire.startapp.App
 import com.respire.startapp.R
-import com.respire.startapp.uiCompose.theme.Typography
-import com.respire.startapp.uiCompose.theme.White
+import com.respire.startapp.uiComposeHilt.theme.Typography
+import com.respire.startapp.uiComposeHilt.theme.White
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MainHiltScreen(viewModel: MainComposeHiltViewModel) {
     val models by viewModel.modelsUiState.collectAsState()
-
+    viewModel.getModels()
     Scaffold(
         topBar = {
             TopAppBar(

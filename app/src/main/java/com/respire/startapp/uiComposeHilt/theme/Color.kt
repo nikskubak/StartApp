@@ -1,4 +1,4 @@
-package com.respire.startapp.uiCompose.theme
+package com.respire.startapp.uiComposeHilt.theme
 
 import androidx.compose.ui.graphics.Color
 

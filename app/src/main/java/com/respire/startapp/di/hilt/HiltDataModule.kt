@@ -1,6 +1,7 @@
 package com.respire.startapp.di.hilt
 
 import android.content.Context
+import androidx.room.Room
 import com.respire.startapp.data.sources.database.AppDatabase
 import com.respire.startapp.data.sources.firestore.FirestoreManager
 import com.respire.startapp.data.sources.network.NetworkService
@@ -8,17 +9,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ActivityComponent::class)
-open class HiltDataModule(context: Context) {
-
-    private var database: AppDatabase? = null
-
-    init {
-        database = AppDatabase.getAppDataBase(context)
-    }
+@InstallIn(SingletonComponent::class)
+open class HiltDataModule {
 
     @Provides
     @Singleton
@@ -28,8 +25,10 @@ open class HiltDataModule(context: Context) {
 
     @Singleton
     @Provides
-    open fun providesDatabase(): AppDatabase {
-        return database!!
+    open fun providesDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room
+            .databaseBuilder(context.applicationContext, AppDatabase::class.java, "app.db")
+            .build()
     }
 
     @Provides

@@ -10,21 +10,4 @@ import com.respire.startapp.data.sources.database.models.DbModel
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getDbModelDao () : DbModelDao
-
-    companion object {
-        var INSTANCE: AppDatabase? = null
-
-        fun getAppDataBase(context: Context): AppDatabase? {
-            if (INSTANCE == null){
-                synchronized(AppDatabase::class){
-                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "app.db").build()
-                }
-            }
-            return INSTANCE
-        }
-
-        fun destroyDataBase(){
-            INSTANCE = null
-        }
-    }
 }

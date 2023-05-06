@@ -1,10 +1,10 @@
 plugins {
-    id 'com.google.dagger.hilt.android'
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -71,6 +71,13 @@ android {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
+    }
+}
+
+kapt {
+    correctErrorTypes true
+    javacOptions {
+        option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
     }
 }
 
@@ -178,8 +185,4 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:2.44"
 }
 apply plugin: 'com.google.gms.google-services'
-
-kapt {
-    correctErrorTypes true
-}
 
