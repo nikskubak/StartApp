@@ -3,6 +3,8 @@ package com.respire.startapp.uiComposeHilt.details
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -34,7 +36,17 @@ fun DetailsScreen(viewModel: MainComposeHiltViewModel, itemId: String?, onBack: 
                     )
                 },
                 backgroundColor = White,
-                elevation = 0.dp
+                elevation = 0.dp,
+                navigationIcon = {
+                        IconButton(onClick = {
+                            onBack()
+                        }) {
+                            Icon(
+                                Icons.Filled.ArrowBack,
+                                null
+                            )
+                        }
+                }
             )
         }
     ) {
