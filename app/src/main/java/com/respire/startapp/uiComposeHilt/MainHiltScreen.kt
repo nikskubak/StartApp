@@ -25,9 +25,12 @@ import com.respire.startapp.R
 import com.respire.startapp.uiComposeHilt.theme.Typography
 import com.respire.startapp.uiComposeHilt.theme.White
 
+const val ROUTE = "MainHiltScreen"
+
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MainHiltScreen(navController: NavHostController) {
+
     val viewModel = hiltViewModel<MainComposeHiltViewModel>()
 
     val models by viewModel.modelsUiState.collectAsState()
@@ -59,7 +62,7 @@ fun MainHiltScreen(navController: NavHostController) {
                             .padding(4.dp)
                             .clickable {
 //                                viewModel.openAppInGooglePlay(entity.marketId)
-                                navController.navigate("list_item_details")
+                                navController.navigate(Screen.DetailsScreen.ROUTE + "/${entity.id}")
                             },
                         colors = CardDefaults.cardColors(
                             containerColor = White,

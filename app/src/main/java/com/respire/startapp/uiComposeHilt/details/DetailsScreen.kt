@@ -1,40 +1,35 @@
 package com.respire.startapp.uiComposeHilt.details
 
-import androidx.compose.foundation.clickable
+import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.respire.startapp.domain.models.Model
 import com.respire.startapp.uiComposeHilt.MainComposeHiltViewModel
 import com.respire.startapp.uiComposeHilt.theme.Typography
 import com.respire.startapp.uiComposeHilt.theme.White
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun DetailsScreen(viewModel : MainComposeHiltViewModel,  onBack: () -> Boolean) {
+fun DetailsScreen(viewModel: MainComposeHiltViewModel, itemId: String?, onBack: () -> Boolean) {
 
-    val models by viewModel.modelsUiState.collectAsState()
-    viewModel.getModels()
+    Log.e("itemId", "$itemId")
+    val item : Model? = viewModel.modelsUiState.collectAsState().value.getOrNull()?.find { it.id == itemId }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = "models.getOrNull()?.first()?.name.orEmpty()",
+                        text = item?.name.orEmpty(),
                         color = Color.Black
                     )
                 },
@@ -43,62 +38,30 @@ fun DetailsScreen(viewModel : MainComposeHiltViewModel,  onBack: () -> Boolean) 
             )
         }
     ) {
-
-        LazyColumn(modifier = Modifier.padding(it)) {
-            models.getOrNull()?.let { list ->
-                items(list.size) { index ->
-                    val entity = list[index]
-                    Card(
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(4.dp)
-                            .clickable {
-                                onBack()
-                            },
-                        colors = CardDefaults.cardColors(
-                            containerColor = White,
-                        ),
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 2.dp
-                        )
-                    ) {
-                        Row(modifier = Modifier.wrapContentHeight()) {
-                            GlideImage(
-                                model = entity.imageUrl,
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .width(80.dp)
-                                    .align(CenterVertically)
-                                    .height(80.dp),
-                                contentDescription = "Image",
-                                contentScale = ContentScale.Inside
-                            )
-
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight()
-                                    .align(CenterVertically)
-                                    .padding(top = 8.dp, bottom = 8.dp, end = 8.dp)
-                            ) {
-                                Text(
-                                    text = entity.name.orEmpty(),
-                                    modifier = Modifier
-                                        .padding(bottom = 8.dp),
-                                    style = Typography.titleLarge
-                                )
-                                Text(
-                                    text = entity.description.orEmpty(),
-                                    style = Typography.bodyLarge,
-                                    maxLines = 2
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(paddingValues = it)
+            ) {
+                GlideImage(
+                    model = item?.imageUrl,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .wrapContentWidth()
+                        .align(CenterHorizontally)
+                        .wrapContentHeight(),
+                    contentDescription = "Image",
+                    contentScale = ContentScale.Inside
+                )
+                Text(modifier = Modifier
+                    .fillMaxWidth()
+                    .align(CenterHorizontally)
+                    .wrapContentHeight()
+                    .padding(horizontal = 16.dp),
+                    text = item?.description.orEmpty(),
+                    style = Typography.bodyLarge
+                )
         }
     }
 }
