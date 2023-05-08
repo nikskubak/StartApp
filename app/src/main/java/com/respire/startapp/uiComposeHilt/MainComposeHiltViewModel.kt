@@ -54,6 +54,16 @@ class MainComposeHiltViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun selectModel(modelId : String){
+        savedStateHandle["modelId"] = modelId
+    }
+
+    fun getSelectedModel(): Model? {
+        return modelsUiState.value.getOrNull()?.find { it.id ==
+            savedStateHandle.get<String>("modelId")
+        }
+    }
+
     fun openAppInGooglePlay(it: String?) {
         try {
             app.startActivity(

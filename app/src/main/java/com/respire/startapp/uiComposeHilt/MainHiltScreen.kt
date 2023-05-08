@@ -62,6 +62,7 @@ fun MainHiltScreen(navController: NavHostController) {
                             .padding(4.dp)
                             .clickable {
 //                                viewModel.openAppInGooglePlay(entity.marketId)
+                                viewModel.selectModel(entity.id)
                                 navController.navigate(Screen.DetailsScreen.ROUTE + "/${entity.id}")
                             },
                         colors = CardDefaults.cardColors(

@@ -24,14 +24,15 @@ import com.respire.startapp.uiComposeHilt.theme.White
 fun DetailsScreen(viewModel: MainComposeHiltViewModel, itemId: String?, onBack: () -> Boolean) {
 
     Log.e("itemId", "$itemId")
-    val item : Model? = viewModel.modelsUiState.collectAsState().value.getOrNull()?.find { it.id == itemId }
+    val itemFromSavedState : Model? = viewModel.getSelectedModel()
+    val itemFromArgs : Model? = viewModel.modelsUiState.collectAsState().value.getOrNull()?.find { it.id == itemId }
 
-    Scaffold(
+        Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = item?.name.orEmpty(),
+                        text = itemFromSavedState?.name.orEmpty(),
                         color = Color.Black
                     )
                 },
@@ -57,7 +58,7 @@ fun DetailsScreen(viewModel: MainComposeHiltViewModel, itemId: String?, onBack: 
                     .padding(paddingValues = it)
             ) {
                 GlideImage(
-                    model = item?.imageUrl,
+                    model = itemFromSavedState?.imageUrl,
                     modifier = Modifier
                         .padding(16.dp)
                         .wrapContentWidth()
@@ -71,7 +72,7 @@ fun DetailsScreen(viewModel: MainComposeHiltViewModel, itemId: String?, onBack: 
                     .align(CenterHorizontally)
                     .wrapContentHeight()
                     .padding(horizontal = 16.dp),
-                    text = item?.description.orEmpty(),
+                    text = itemFromSavedState?.description.orEmpty(),
                     style = Typography.bodyLarge
                 )
         }
