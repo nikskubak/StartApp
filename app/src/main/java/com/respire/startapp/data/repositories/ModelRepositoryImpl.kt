@@ -58,4 +58,11 @@ class ModelRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override fun getModel(id: String): Flow<Result<Model>> {
+        return database.getDbModelDao().get(id)
+            .map {
+                Result.success(it.mapToDomainModel())
+            }.flowOn(Dispatchers.IO)
+    }
 }

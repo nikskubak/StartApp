@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.respire.startapp.data.sources.database.models.DbModel
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DbModelDao {
@@ -13,7 +14,7 @@ interface DbModelDao {
     fun getAll(): MutableList<DbModel>?
 
     @Query("SELECT * from DbModel where id = :id LIMIT 1")
-    fun get(id : String): DbModel?
+    fun get(id : String): Flow<DbModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(entity: DbModel) : Long

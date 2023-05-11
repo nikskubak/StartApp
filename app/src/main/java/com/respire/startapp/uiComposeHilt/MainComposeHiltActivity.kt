@@ -5,9 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,15 +32,9 @@ class MainComposeHiltActivity : ComponentActivity() {
                             type = NavType.StringType
                         })
                     ) {
-                        val parentEntry = remember(it) {
-                            navController.getBackStackEntry(Screen.MainScreen.ROUTE)
+                        DetailsScreen {
+                            navController.popBackStack()
                         }
-                        //use already created instance of MainComposeHiltViewModel
-                        val parentViewModel: MainComposeHiltViewModel = hiltViewModel(parentEntry)
-                        DetailsScreen(
-                            parentViewModel,
-                            it.arguments?.getString(Screen.DetailsScreen.ITEM_ID)
-                        ) { navController.popBackStack() }
                     }
                 }
             }

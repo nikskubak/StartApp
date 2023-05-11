@@ -34,7 +34,6 @@ fun MainHiltScreen(navController: NavHostController) {
     val viewModel = hiltViewModel<MainComposeHiltViewModel>()
 
     val models by viewModel.modelsUiState.collectAsState()
-    viewModel.getModels()
     Scaffold(
         topBar = {
             TopAppBar(
@@ -61,8 +60,6 @@ fun MainHiltScreen(navController: NavHostController) {
                             .wrapContentHeight()
                             .padding(4.dp)
                             .clickable {
-//                                viewModel.openAppInGooglePlay(entity.marketId)
-                                viewModel.selectModel(entity.id)
                                 navController.navigate(Screen.DetailsScreen.ROUTE + "/${entity.id}")
                             },
                         colors = CardDefaults.cardColors(

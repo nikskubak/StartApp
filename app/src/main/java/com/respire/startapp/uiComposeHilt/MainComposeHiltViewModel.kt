@@ -1,10 +1,6 @@
 package com.respire.startapp.uiComposeHilt
 
 import android.app.Application
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
@@ -30,7 +26,11 @@ class MainComposeHiltViewModel @Inject constructor(
     private var _modelsUiState = MutableStateFlow(Result.success(emptyList<Model>()))
     var modelsUiState: StateFlow<Result<List<Model>>> = _modelsUiState.asStateFlow()
 
-    fun getModels() {
+    init {
+        getModels()
+    }
+
+    private fun getModels() {
         if (_modelsUiState.value.getOrNull().isNullOrEmpty()) {
             Log.e("getModels", "getModels")
             refreshModels()
@@ -52,38 +52,6 @@ class MainComposeHiltViewModel @Inject constructor(
                 errorUiState.value = exception.message
             }
             .launchIn(viewModelScope)
-    }
-
-    fun selectModel(modelId : String){
-        savedStateHandle["modelId"] = modelId
-    }
-
-    fun getSelectedModel(): Model? {
-        return modelsUiState.value.getOrNull()?.find { it.id ==
-            savedStateHandle.get<String>("modelId")
-        }
-    }
-
-    fun openAppInGooglePlay(it: String?) {
-        try {
-            app.startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=$it")
-                ).apply {
-                    addFlags(FLAG_ACTIVITY_NEW_TASK)
-                }
-            )
-        } catch (anfe: ActivityNotFoundException) {
-            app.startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=$it")
-                ).apply {
-                    addFlags(FLAG_ACTIVITY_NEW_TASK)
-                }
-            )
-        }
     }
 
 }
