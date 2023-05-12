@@ -23,24 +23,24 @@ class MainComposeHiltViewModel @Inject constructor(
     var baseUiState: StateFlow<BaseUiState> = _baseUiState
 
     var errorUiState = MutableStateFlow<String?>(null)
-    private var _modelsUiState = MutableStateFlow(Result.success(emptyList<Model>()))
-    var modelsUiState: StateFlow<Result<List<Model>>> = _modelsUiState.asStateFlow()
+    private var _modelsUiState = MutableStateFlow(emptyList<Model>())
+    var modelsUiState: StateFlow<List<Model>> = _modelsUiState.asStateFlow()
 
     init {
         getModels()
     }
 
     private fun getModels() {
-        if (_modelsUiState.value.getOrNull().isNullOrEmpty()) {
+        if (modelsUiState.value.isEmpty()) {
             Log.e("getModels", "getModels")
             refreshModels()
         }
     }
 
-    fun refreshModels() {
+    private fun refreshModels() {
         modelRepository.getModels(NetworkUtil.isConnected(app.baseContext))
             .take(1)
-            .onEach { _modelsUiState.value = it }
+            .onEach { _modelsUiState.value = it.getOrNull().orEmpty() }
             .onStart {
                 _baseUiState.update { BaseUiState(true) }
             }
