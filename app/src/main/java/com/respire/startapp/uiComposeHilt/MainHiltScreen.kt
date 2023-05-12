@@ -94,7 +94,6 @@ fun MainHiltUI(models: List<Model>, onModelClick: (String, String) -> Unit) {
 }
 
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
