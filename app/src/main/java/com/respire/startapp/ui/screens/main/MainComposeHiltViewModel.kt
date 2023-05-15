@@ -1,4 +1,4 @@
-package com.respire.startapp.uiComposeHilt
+package com.respire.startapp.ui.screens.main
 
 import android.app.Application
 import android.util.Log
@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.respire.startapp.data.sources.network.NetworkUtil
 import com.respire.startapp.domain.models.Model
 import com.respire.startapp.domain.repo.ModelRepository
+import com.respire.startapp.ui.screens.BaseUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject

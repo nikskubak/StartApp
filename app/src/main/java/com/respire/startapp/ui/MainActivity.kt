@@ -1,4 +1,4 @@
-package com.respire.startapp.uiComposeHilt
+package com.respire.startapp.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -28,13 +28,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.respire.startapp.R
-import com.respire.startapp.uiComposeHilt.details.DetailsScreen
-import com.respire.startapp.uiComposeHilt.theme.StartAppTheme
-import com.respire.startapp.uiComposeHilt.theme.White
+import com.respire.startapp.ui.screens.Screen
+import com.respire.startapp.ui.screens.details.DetailsScreen
+import com.respire.startapp.ui.screens.main.MainHiltScreen
+import com.respire.startapp.ui.theme.StartAppTheme
+import com.respire.startapp.ui.theme.White
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainComposeHiltActivity : ComponentActivity() {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +85,8 @@ class MainComposeHiltActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        composable(Screen.DetailsScreen.ROUTE_WITH_PARAMS,
+                        composable(
+                            Screen.DetailsScreen.ROUTE_WITH_PARAMS,
                             arguments = listOf(
                                 navArgument(Screen.DetailsScreen.ITEM_ID) {
                                     type = NavType.StringType
@@ -103,15 +106,10 @@ class MainComposeHiltActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     StartAppTheme {
-        Greeting("Android")
+
     }
 }

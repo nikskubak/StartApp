@@ -1,4 +1,4 @@
-package com.respire.startapp.uiComposeHilt.details
+package com.respire.startapp.ui.screens.details
 
 import android.app.Application
 import android.content.ActivityNotFoundException
@@ -9,8 +9,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.respire.startapp.domain.models.Model
 import com.respire.startapp.domain.repo.ModelRepository
-import com.respire.startapp.uiComposeHilt.BaseUiState
-import com.respire.startapp.uiComposeHilt.Screen
+import com.respire.startapp.ui.screens.BaseUiState
+import com.respire.startapp.ui.screens.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

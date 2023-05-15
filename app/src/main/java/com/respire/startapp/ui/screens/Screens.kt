@@ -1,4 +1,4 @@
-package com.respire.startapp.uiComposeHilt
+package com.respire.startapp.ui.screens
 
 class Screens {
 }

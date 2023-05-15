@@ -1,4 +1,4 @@
-package com.respire.startapp.uiComposeHilt
+package com.respire.startapp.ui.screens.main
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,8 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.respire.startapp.domain.models.Model
-import com.respire.startapp.uiComposeHilt.theme.Typography
-import com.respire.startapp.uiComposeHilt.theme.White
+import com.respire.startapp.ui.theme.Typography
+import com.respire.startapp.ui.theme.White
 
 const val ROUTE = "MainHiltScreen"
 

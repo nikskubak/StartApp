@@ -1,4 +1,4 @@
-package com.respire.startapp.uiComposeHilt.theme
+package com.respire.startapp.ui.theme
 
 import android.app.Activity
 import android.os.Build
