@@ -8,7 +8,6 @@ import com.respire.startapp.data.sources.network.NetworkService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -20,7 +19,7 @@ open class HiltDataModule {
     @Provides
     @Singleton
     open fun provideNetworkService(): NetworkService {
-        return NetworkService.getAuthRetrofitService("https://api.jsonbin.io/v3/b/5e6a0c3831c25c2b0fd34054/")!!
+        return NetworkService.getRetrofitService("https://api.jsonbin.io/v3/b/5e6a0c3831c25c2b0fd34054/")!!
     }
 
     @Singleton

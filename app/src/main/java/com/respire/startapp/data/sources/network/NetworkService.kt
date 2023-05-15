@@ -18,18 +18,18 @@ interface NetworkService {
 
     companion object Factory {
 
-        private var authRetrofitService: NetworkService? = null
+        private var retrofitService: NetworkService? = null
 
-        fun getAuthRetrofitService(baseUrl: String): NetworkService? {
-            if (authRetrofitService == null) {
+        fun getRetrofitService(baseUrl: String): NetworkService? {
+            if (retrofitService == null) {
                 val client = initOkHttpClient()
                 val converter = GsonBuilder()
                     .excludeFieldsWithoutExposeAnnotation()
                     .create()
                 val retrofit = getRetrofit(client, converter, baseUrl)
-                authRetrofitService = retrofit.create(NetworkService::class.java)
+                retrofitService = retrofit.create(NetworkService::class.java)
             }
-            return authRetrofitService
+            return retrofitService
         }
 
         private fun initOkHttpClient(): OkHttpClient {

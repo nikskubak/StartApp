@@ -3,6 +3,7 @@ package com.respire.startapp.data.sources.network.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.respire.startapp.data.sources.database.models.DbModel
+import com.respire.startapp.domain.models.Model
 
 data class ApiModel(@Expose var record: List<ApiSubModel>)
 
@@ -23,4 +24,8 @@ data class ApiSubModel(
 
 fun ApiSubModel.mapToDbModel(): DbModel {
     return DbModel(id, name, description, marketId, imageUrl)
+}
+
+fun ApiSubModel.mapToDomainModel(): Model {
+    return Model(id, name, description, marketId, imageUrl)
 }
