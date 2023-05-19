@@ -10,7 +10,7 @@ plugins {
 android {
     compileSdkVersion 33
     defaultConfig {
-        applicationId "com.respire.startapp"
+        applicationId "ua.lifecell.startapp"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 1

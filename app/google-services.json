@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:373025172433:android:17aab508fd54fb10f80ef0",
+        "mobilesdk_app_id": "1:373025172433:android:d46c56732dd4a979f80ef0",
         "android_client_info": {
-          "package_name": "com.respire.startapp"
+          "package_name": "ua.lifecell.startapp"
         }
       },
       "oauth_client": [
