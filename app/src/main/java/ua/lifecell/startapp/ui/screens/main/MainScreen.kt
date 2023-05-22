@@ -28,7 +28,7 @@ const val ROUTE = "MainHiltScreen"
 fun MainHiltScreen(
     onModelClick: (String, String) -> Unit
 ) {
-    val viewModel = hiltViewModel<MainComposeHiltViewModel>()
+    val viewModel = hiltViewModel<MainViewModel>()
     val models by viewModel.modelsUiState.collectAsState()
 
     MainHiltUI(models, onModelClick)

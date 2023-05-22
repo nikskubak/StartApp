@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
-class MainComposeHiltViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     var modelRepository: ModelRepository,
     var app: Application,
     val savedStateHandle: SavedStateHandle

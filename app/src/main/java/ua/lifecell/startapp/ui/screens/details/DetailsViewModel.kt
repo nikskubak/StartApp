@@ -20,7 +20,7 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     var modelRepository: ModelRepository,
     var app: Application,
-    val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(app) {
 
     private val modelId: String = checkNotNull(savedStateHandle[Screen.DetailsScreen.ITEM_ID])
