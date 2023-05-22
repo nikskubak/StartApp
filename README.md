@@ -9,6 +9,7 @@ Tech stack:
 - Compose + Navigation
 
 ## New project creating
+You can extends from this project for creating something new
 
 - Pull StartApp project
 - Change package name and applicationId
@@ -20,8 +21,7 @@ Tech stack:
 ## StartApp demo app 
 StartApp downloads demo data from Firestore, saves them and shows for user
 
-![Apps list](1.png) ![App details](2.png)
-
+<img src="1.png" width="500"/> <img src="2.png" width="500"/> 
 ![Firestore data](3.png)
 
 ## Code snippets
